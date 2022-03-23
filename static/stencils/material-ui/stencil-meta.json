@@ -10,8 +10,8 @@
   "license": "MIT",
   "homepage": "https://github.com/mipmip/svg-stencils#readme",
   "components": [
-    "http://localhost:36661/stencils/material-ui/select.svg",
-    "http://localhost:36661/stencils/material-ui/button.svg"
+    "/stencils/material-ui/select.svg",
+    "/stencils/material-ui/button.svg"
   ]
 }
 

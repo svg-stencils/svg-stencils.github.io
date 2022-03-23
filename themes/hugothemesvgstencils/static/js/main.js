@@ -18,8 +18,8 @@ function openLib(url){
 
       const start = async () => {
         await asyncForEach(out.components, async (c) => {
-          if(out.baseURL){
-            svgcomp = out.baseURL + c;
+          if(out.base_url){
+            svgcomp = out.base_url + c;
           }
           else{
             svgcomp = c;
