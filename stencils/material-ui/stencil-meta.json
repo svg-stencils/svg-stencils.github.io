@@ -1,0 +1,17 @@
+{
+  "name": "material-ui",
+  "version": "1.0.0",
+  "description": "Material UI components",
+  "keywords": [
+    "react",
+    "web"
+  ],
+  "author": "Pim Snel",
+  "license": "MIT",
+  "homepage": "https://github.com/mipmip/svg-stencils#readme",
+  "components": [
+    "http://localhost:36661/stencils/material-ui/select.svg",
+    "http://localhost:36661/stencils/material-ui/button.svg"
+  ]
+}
+
