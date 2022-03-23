@@ -1,0 +1,10 @@
+[
+  {
+    "name": "web-mockup-toolkit",
+    "url": "http://localhost:36661/stencils/web-mockup-toolkit/stencil-meta.json"
+  },
+  {
+    "name": "material-ui",
+    "url": "http://localhost:36661/stencils/material-ui/stencil-meta.json"
+  }
+]

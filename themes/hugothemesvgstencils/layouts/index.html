@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{ partial "head.html" . }}
+
+  <body>
+    {{ partial "header.html" . }}
+    <div id="app" class="flex flex-col min-h-screen font-roboto dark:bg-gray-900">
+
+      <main class="flex-1 lg:mt-20">
+
+        <section class="container px-4 py-10 mx-auto">
+
+          {{ partial "libraries.html" . }}
+
+          <h4 id="stencilLibTitle"
+            class="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200">
+            [None Selected]
+          </h4>
+
+          {{ partial "stencils.html" . }}
+
+        </section>
+      </main>
+
+
+
+    {{ partial "footer.html" . }}
+
+  </body>
+
+</html>
+

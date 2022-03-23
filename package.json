@@ -1,0 +1,26 @@
+{
+  "name": "svg-stencils",
+  "version": "1.0.0",
+  "description": "draggable SVG stencils to be used as components for UX",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mipmip/svg-stencils.git"
+  },
+  "keywords": [
+    "svg",
+    "component",
+    "inkscape",
+    "design",
+    "system"
+  ],
+  "author": "Pim Snel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mipmip/svg-stencils/issues"
+  },
+  "homepage": "https://github.com/mipmip/svg-stencils#readme"
+}

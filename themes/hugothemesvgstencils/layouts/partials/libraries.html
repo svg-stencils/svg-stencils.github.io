@@ -1,0 +1,7 @@
+<select onchange="selectChanged()" id="stencilLibs">
+{{ range $.Site.Data.stencils }}
+<option value="{{.url}}">{{ .name}}</option>
+{{ end }}
+</select>
+
+
