@@ -17,9 +17,3 @@ design toolkits for App's like Inkscape.
 ## Troubleshooting
 
 [TODO]
-
-
-
-
-
-
