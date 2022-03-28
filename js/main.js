@@ -12,24 +12,25 @@ function selectChanged(){
 function openLib(url){
   let svgcomp = "";
   let components = [];
-  fetch(url)
+
+  fetch(url + "/stencil-meta.json")
+    .then(res =>  res.json())
+    .then((out) => {
+      document.getElementById("stencilLibTitle").innerHTML = out.name;
+    })
+    .catch(err => { throw err });
+
+
+  fetch(url + "/stencil-components.json")
     .then(res =>  res.json())
     .then((out) => {
 
       const start = async () => {
         await asyncForEach(out.components, async (c) => {
-          if(out.base_url){
-            svgcomp = out.base_url + c;
-          }
-          else{
-            svgcomp = c;
-          }
-
-          components.push('<div class="overflow-hidden"> <div class="aspect-w-16 aspect-h-10"> <img src="'+svgcomp+'" alt="Blog post image" class="object-cover w-full h-full rounded-lg shadow-md"> </div> </div>');
-
+          svgcomp = url+"/"+c;
+          components.push('<div class="overflow-hidden"> <div class="aspect-w-16 aspect-h-10"> <img src="'+svgcomp+'" class="object-cover w-full h-full rounded-lg shadow-md"> </div> </div>');
         });
         document.getElementById("selectedLib").innerHTML = components.join("\n");
-        document.getElementById("stencilLibTitle").innerHTML = out.name;
       }
       start();
 
