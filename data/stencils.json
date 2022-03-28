@@ -1,6 +1,14 @@
 [
   {
-    "name": "Web Mockup Toolkit",
-    "url": "https://svg-stencils.github.io/stencil-web-mockup-toolkit/stencil-meta.json"
+      "name": "Gnome GTK4 Patterns",
+      "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-patterns"
+  },
+  {
+      "name":"Gnome GTK4 Widgets Light",
+      "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-light"
+  },
+  {
+      "name": "Gnome GTK4 Widgets Dark",
+      "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark"
   }
 ]
