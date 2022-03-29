@@ -22,7 +22,21 @@ Using SVG Stencils is easy.
 
 ## How to create a stencil library
 
-We created an [Inkscape Extenion](https://github.com/svg-stencils/inkscape-svg_stencil_export) which helps with the creations of new stencils.
+We created an [Inkscape
+Extenion](https://github.com/svg-stencils/inkscape-svg_stencil_export) which
+helps with the creations of new stencils.
+
+A minimal directory structure of a stencil is:
+
+```
+./stencil-components.json
+./stencil-meta.json
+./component1.svg
+./component2.svg
+./component3.svg
+```
+
+Use [other published stencils](https://github.com/svg-stencils/svg-stencils.github.io/blob/main/data/stencils.json) as example.
 
 ## How to add my stencil to the SVG Stencils library
 
@@ -38,10 +52,12 @@ We created an [Inkscape Extenion](https://github.com/svg-stencils/inkscape-svg_s
 ```
 
 The the above example implies the existance of
+
 `https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark/stencil-components.json`
+
 and
+
 `https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark/stencil-meta.json`
-The files stencil-components.json and stencil-meta.json should exist.
 
 - Commit your changes (`git commit -am 'Add new stencil'`)
 - Push to the branch (`git push origin my-new-stencil`)
