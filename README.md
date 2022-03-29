@@ -25,7 +25,7 @@ Using SVG Stencils is easy.
 ## How to create a stencil library
 
 We created an [Inkscape
-Extenion](https://github.com/svg-stencils/inkscape-svg_stencil_export) which
+Extension](https://github.com/svg-stencils/inkscape-svg_stencil_export) which
 helps with the creations of new stencils.
 
 A minimal directory structure of a stencil is:
