@@ -15,8 +15,8 @@ https://user-images.githubusercontent.com/658612/160613837-4df9c606-9970-4608-9b
 
 ## Documentation
 
-Read how to use SVG-Stencils and and how to create and add your stencils to the
-library.
+[Read how to use SVG-Stencils and and how to create and add your stencils to the
+library](./DOCUMENTATION.md).
 
 [Documentation](./DOCUMENTATION.md)
 
