@@ -12,6 +12,7 @@ function selectChanged(){
 function openLib(url){
   let svgcomp = "";
   let components = [];
+  let imagecelltpl = document.getElementById("imgcelltpl").innerHTML;
 
   fetch(url + "/stencil-meta.json")
     .then(res =>  res.json())
@@ -28,7 +29,7 @@ function openLib(url){
       const start = async () => {
         await asyncForEach(out.components, async (c) => {
           svgcomp = url+"/"+c;
-          components.push('<div class="overflow-hidden"> <div class="aspect-w-16 aspect-h-10"> <img src="'+svgcomp+'" class="object-cover w-full h-full rounded-lg shadow-md"> </div> </div>');
+          components.push(imagecelltpl.replace("SVGCOMP", svgcomp));
         });
         document.getElementById("selectedLib").innerHTML = components.join("\n");
       }

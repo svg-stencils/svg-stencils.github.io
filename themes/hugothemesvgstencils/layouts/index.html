@@ -1,21 +1,37 @@
 <!DOCTYPE html>
+<!-- vim: set ft=html: -->
 <html lang="en">
   {{ partial "head.html" . }}
 
   <body>
-    {{ partial "header.html" . }}
-    <div id="app" class="flex flex-col min-h-screen font-roboto dark:bg-gray-900">
 
-      <main class="flex-1 lg:mt-20">
+    <div class="hidden" id="imgcelltpl">
+      <div class="overflow-hidden p-4 bg-slate-50/40 grid place-items-center">
+        <div class="aspect-w-16 aspect-h-10">
+          <img src="SVGCOMP" class="">
+        </div>
+      </div>
+    </div>
 
-        <section class="container px-4 py-10 mx-auto">
+    <div class="flex flex-col h-screen overflow-hidden">
 
+      <header class="flex w-full justify-between text-center border-b border-grey p-4">
           {{ partial "libraries.html" . }}
+        <div class="">
+          <img src="logo.png" class=""/>
+        </div>
+    </header>
+      <div class="bg-green-200 border-b border-t border-green-500">
+        <h4 id="stencilLibTitle" class="p-2 text-2xl text-center font-semibold text-gray-800 dark:text-gray-200">
+          [None Selected]
+        </h4>
+      </div>
 
-          <h4 id="stencilLibTitle"
-            class="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200">
-            [None Selected]
-          </h4>
+      <main class="flex-1 overflow-y-scroll" style="background-image: url(/checker.png)">
+
+        <section class="container mx-auto">
+
+
 
           {{ partial "stencils.html" . }}
 
@@ -23,10 +39,11 @@
       </main>
 
 
-
-    {{ partial "footer.html" . }}
-
+      </main>
+      {{ partial "footer.html" . }}
+    </div>
   </body>
 
 </html>
+
 

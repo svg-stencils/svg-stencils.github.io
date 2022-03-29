@@ -1,7 +1,11 @@
+<div class="m-3">
+Select a stencil kit:
+
 <select onchange="selectChanged()" id="stencilLibs">
 {{ range $.Site.Data.stencils }}
 <option value="{{.url}}">{{ .name}}</option>
 {{ end }}
 </select>
 
+</div>
 
