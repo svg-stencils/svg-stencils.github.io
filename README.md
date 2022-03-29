@@ -71,6 +71,29 @@ right to remove stencils from the library at any time. Make sure your are the
 author or you are sure the components are allowed to be shared as open source
 components.
 
+## Development
+
+### Hugo
+
+To run svg-stencils on your local machine you need [Hugo](https://gohugo.io).
+
+clone the repository and then run:
+
+```
+hugo server
+```
+
+### TailWind
+
+SVG Stencils layout is developed with <a href=https://tailwindcss.com/">TailWind</a>. Install tailwind:
+
+```
+cd themes/hugothemesvgstencils
+npm install
+```
+
+When you add TailWind classes run `npm run csscompile` from the theme-root directory.
+
 ## Other Contributions
 
 1. Fork it ( https://github.com/svg-stencils/svg-stencils.github.io/fork )
