@@ -9,6 +9,14 @@ function selectChanged(){
   url = document.getElementById("stencilLibs").value;
   openLib(url);
 }
+
+function openinfo(){
+        document.getElementById("stencil-info").classList.remove("hidden");
+}
+function closeinfo(){
+        document.getElementById("stencil-info").classList.add("hidden");
+}
+
 function openLib(url){
   let svgcomp = "";
   let components = [];
@@ -18,6 +26,42 @@ function openLib(url){
     .then(res =>  res.json())
     .then((out) => {
       document.getElementById("stencilLibTitle").innerHTML = out.name;
+      document.getElementById("stencil-name").innerHTML = out.name;
+
+      if(out.author){
+        document.getElementById("stencil-author").innerHTML = "Author: " + out.author;
+        document.getElementById("stencil-author").classList.remove("hidden");
+      }
+      else{
+        document.getElementById("stencil-author").classList.add("hidden");
+      }
+
+      console.log(out)
+      if(out.homepage){
+        document.getElementById("stencil-homepage").innerHTML = 'Homepage: <a  class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out" target="_blank" href="' + out.homepage +'">'+out.homepage+'</a>';
+        document.getElementById("stencil-homepage").classList.remove("hidden");
+      }
+      else{
+        document.getElementById("stencil-author").classList.add("hidden");
+      }
+
+      if(out.license){
+        document.getElementById("stencil-license").innerHTML = '<a target="_blank" class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out" href="' + out.license +'">License</a>';
+        document.getElementById("stencil-license").classList.remove("hidden");
+      }
+      else{
+        document.getElementById("stencil-author").classList.add("hidden");
+      }
+
+      if(out.description){
+        document.getElementById("stencil-description").innerHTML = out.description;
+        document.getElementById("stencil-description").classList.remove("hidden");
+      }
+      else{
+        document.getElementById("stencil-author").classList.add("hidden");
+      }
+
+
     })
     .catch(err => { throw err });
 
@@ -42,4 +86,5 @@ function openLib(url){
 function ready() {
   selectChanged();
 }
+
 document.addEventListener("DOMContentLoaded", ready);
