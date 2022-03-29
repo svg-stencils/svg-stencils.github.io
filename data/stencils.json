@@ -1,5 +1,9 @@
 [
   {
+      "name": "Inkscape Mockup Toolkit",
+      "url": "https://svg-stencils.github.io/Inkscape-Mockup-Toolkit/"
+  },
+  {
       "name": "Gnome GTK4 Patterns",
       "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-patterns"
   },
