@@ -51,13 +51,12 @@ Use [other published stencils](https://github.com/svg-stencils/svg-stencils.gith
   }
 ```
 
-The the above example implies the existance of
+The the above example implies the existance of these two files:
 
-`https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark/stencil-components.json`
-
-and
-
-`https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark/stencil-meta.json`
+```
+- https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark/stencil-components.json
+- https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark/stencil-meta.json
+```
 
 - Commit your changes (`git commit -am 'Add new stencil'`)
 - Push to the branch (`git push origin my-new-stencil`)
