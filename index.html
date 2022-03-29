@@ -10,17 +10,38 @@
 <script src=js/main.js></script>
 </head>
 <body>
-<div id=app class="flex flex-col min-h-screen font-roboto dark:bg-gray-900">
-<main class="flex-1 lg:mt-20">
-<section class="container px-4 py-10 mx-auto">
+<div class=hidden id=imgcelltpl>
+<div class="overflow-hidden p-4 bg-slate-50/40 grid place-items-center">
+<div class="aspect-w-16 aspect-h-10">
+<img src=SVGCOMP>
+</div>
+</div>
+</div>
+<div class="flex flex-col h-screen overflow-hidden">
+<header class="flex w-full justify-between text-center border-b border-grey p-4">
+<div class=m-3>
+Select a stencil kit:
 <select onchange=selectChanged() id=stencilLibs><option value=https://svg-stencils.github.io/Inkscape-Mockup-Toolkit/>Inkscape Mockup Toolkit</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-patterns>Gnome GTK4 Patterns</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-light>Gnome GTK4 Widgets Light</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark>Gnome GTK4 Widgets Dark</option></select>
-<h4 id=stencilLibTitle class="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200">
+</div>
+<div>
+<img src=logo.png>
+</div>
+</header>
+<div class="bg-green-200 border-b border-t border-green-500">
+<h4 id=stencilLibTitle class="p-2 text-2xl text-center font-semibold text-gray-800 dark:text-gray-200">
 [None Selected]
 </h4>
+</div>
+<main class="flex-1 overflow-y-scroll" style=background-image:url(/checker.png)>
+<section class="container mx-auto">
 <div id=selectedLib class="grid gap-8 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
 </div>
 </section>
 </main>
+</main>
+<footer class="w-full text-center border-t border-grey p-4">
 <a href=https://github.com/mipmip/svg-stencils/> Add your stencil library </a>
+</footer>
+</div>
 </body>
 </html>
