@@ -64,10 +64,10 @@ The the above example implies the existance of these two files:
 
 **Note**
 
-Only open source stencils are added. We apply a quality check. We preserve
-the right not to add or to remove stencils from the library at any time. Make
-sure your are the author or you are sure the components are allowed to be
-shared as open source components.
+Only open source stencils are added. We apply a quality check. We preserve the
+right to remove stencils from the library at any time. Make sure your are the
+author or you are sure the components are allowed to be shared as open source
+components.
 
 ## Other Contributions
 
