@@ -21,13 +21,38 @@
           <img src="logo.png" class=""/>
         </div>
     </header>
-      <div class="bg-green-200 border-b border-t border-green-500">
-        <h4 id="stencilLibTitle" class="p-2 text-2xl text-center font-semibold text-gray-800 dark:text-gray-200">
+      <div class="bg-green-200 border-b border-t border-green-500 text-center p-2">
+        <span id="stencilLibTitle" class="p-2 text-2xl text-center font-semibold text-gray-800 dark:text-gray-200">
           [None Selected]
-        </h4>
+        </span>
+        <button onclick="openinfo()" class="bg-slate-400 hover:bg-blue-700 text-white font-bold py-2 px-1 rounded-full">
+          <svg class="fill-current w-3 h-3 ml-1 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
+        </button>
       </div>
 
       <main class="flex-1 overflow-y-scroll" style="background-image: url(/checker.png)">
+
+        <div class="bg-white border-b border-green-500 hidden" id="stencil-info" >
+
+          <div class="bg-blue-100 xborder-t xborder-b border-blue-500 text-blue-700 p-10" role="alert">
+            <p class="font-bold" id="stencil-name"></p>
+            <div class="text-sm">
+              <div id="stencil-description" class="mb-3"></div>
+              <div id="stencil-author" class="mb-1"></div>
+              <div id="stencil-license" class="mb-1"></div>
+              <div id="stencil-homepage" class="mb-1"></div>
+              <div id="stencil-link" class="mb-1"></div>
+            </div>
+
+            <div class="flex justify-end">
+              <button onclick="closeinfo()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-r1 px-4 border border-blue-500 hover:border-transparent rounded">
+                close
+              </button>
+            </div>
+          </div>
+
+
+        </div>
 
         <section class="container mx-auto">
 
