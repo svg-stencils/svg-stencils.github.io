@@ -34,14 +34,19 @@ hugo server
 
 ### TailWind
 
-SVG Stencils layout is developed with <a href=https://tailwindcss.com/">TailWind</a>. Install tailwind:
+SVG Stencils layout is developed with [TailWind](https://tailwindcss.com). Install tailwind:
 
 ```
 cd themes/hugothemesvgstencils
 npm install
 ```
 
-When you add TailWind classes run `npm run csscompile` from the theme-root directory.
+When you add TailWind classes inside the HTML, run `npm run csscompile` from the theme-root directory.
+
+```
+cd themes/hugothemesvgstencils
+npm run csscompile
+```
 
 ## Other Contributions
 
