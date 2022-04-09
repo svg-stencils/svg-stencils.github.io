@@ -15,9 +15,8 @@
       "name": "Gnome GTK4 Widgets Dark",
       "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark"
   },
-
   { 
     "name": "Pure CSS Remix Widgets",
     "url": "https://guilherme-svg.github.io/mockup-resources/pure-css-remix-widgets/"
-  },
+  }
 ]
