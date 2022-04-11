@@ -45,7 +45,7 @@ helps with the creations of new stencils.
 ## How to publish a stencil on Github Pages
 
 **Use the [Inkscape
-Extension](https://github.com/svg-stencils/inkscape-svg_stencil_export) to create your stencil-directory**. Make sure to check "Create GitHub Pages Workflow" and 
+Extension](https://github.com/svg-stencils/inkscape-svg_stencil_export) to create your stencil-directory**. Make sure to check `Create GitHub Pages Workflow` and also create `index.html` and `readme.md`.
 
 ![githubpages](https://user-images.githubusercontent.com/658612/162697448-e1fd793b-90c7-40ca-93ba-1e0cd6ca06cb.png)
 
