@@ -62,6 +62,8 @@ git push
 
 When the repo is pushed **setup github pages**.
 
+![githubpages2](https://user-images.githubusercontent.com/658612/162701768-b940ef31-0f0f-48cf-a1b4-901284a9b2e7.png)
+
 1. Go to the repo settings
 2. Go to the pages section
 3. Choose the root of the main branch as pages source
