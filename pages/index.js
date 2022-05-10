@@ -26,12 +26,24 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import InfoIcon from '@mui/icons-material/Info';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+
+import Fab from '@mui/material/Fab';
+
+const StyledFab = styled(Fab)({
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+});
 
 const ComponentImgStyle = styled('img')({
   top: 0,
@@ -54,6 +66,8 @@ const lightTheme = createTheme({
   palette: {
     mode: 'light',
     white: '#fff',
+    whiteTrans: 'rgba(255,255,255,0.3)',
+    hover: 'rgba(76, 203, 76, 0.3)',
     primary: {
       main: '#1976d2',
     },
@@ -72,6 +86,8 @@ class ResponsiveAppBar extends React.Component {
       view: "list",
       infoIconDisabled: true,
       viewDisabled: true,
+      infoOpen: false,
+      quickStartOpen: false,
       stencilMetaName: "",
       stencilMetaDescription: "",
       stencilMetaHomePage: "",
@@ -156,7 +172,6 @@ class ResponsiveAppBar extends React.Component {
         });
     }
     else{
-      console.log("unset components")
       this.setState( {
         stencilMetaName: "",
         stencilMetaDescription: "",
@@ -177,20 +192,67 @@ class ResponsiveAppBar extends React.Component {
     this.setState({view:view})
   }
 
-  renderComponent(component){
+  renderComponentsCanvas(){
+    const {components, componentsData} = this.state;
+    const comps = components.map((component)=>{
+
+      if(componentsData[component]){
+        const cd = componentsData[component];
+        return (
+          <Box position='absolute' top={cd.top+"px"} left={cd.left+"px"} key={component} sx={{
+          cursor: 'grab',
+            padding: '2px',
+          '&:hover': {
+            border: 'solid 2px green',
+            padding: '0',
+          },
+        }}>
+            <img src={this.state.componentBaseUrl + "/" + component} />
+          </Box>
+        )
+
+      }
+      return null
+
+    })
+
     return (
+      <Container maxWidth="xl" >
+        <Box my={2} position="relative">
+          {comps}
+        </Box>
+      </Container>
+    )
+
+  }
+  renderComponentsList(){
+
+    const {components} = this.state;
+    const comps = components.map((component)=>{ return (
       <Grid item xs={2} sm={4} md={4} key={component}  style={{border:"1px solid green", marginLeft:"-1px", marginTop:"-1px"}}>
-        <Box sx={{ pt: '100%', position: 'relative' }}>
+        <Box sx={{
+          cursor: 'grab',
+          pt: '100%',
+          position: 'relative',
+          '&:hover': {
+            backgroundColor: 'hover',
+          },
+        }}>
           <ComponentImgStyle src={this.state.componentBaseUrl + "/" + component} />
         </Box>
       </Grid>
+    )})
+
+    return (
+      <Container maxWidth="xl">
+        <Grid container my={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+          {comps}
+        </Grid>
+      </Container>
     )
   }
 
   render(){
-
-    const {components} = this.state;
-    const comps = components.map((component)=>{ return this.renderComponent(component)})
 
     return (
       <ThemeProvider theme={lightTheme}>
@@ -234,14 +296,12 @@ class ResponsiveAppBar extends React.Component {
 
               </Box>
 
-
               <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
                 <ToggleButtonGroup
                   disabled={this.state.viewDisabled}
                   value={this.state.view}
                   exclusive
                   size="small"
-                  activeOption={this.state.view}
                   onChange={(e,view)=>this.handleChangeView(view)}
                 >
                   <ToggleButton value="list" aria-label="list">
@@ -261,11 +321,7 @@ class ResponsiveAppBar extends React.Component {
           </Container>
         </AppBar>
 
-        <Container maxWidth="xl" >
-          <Grid container my={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-            {comps}
-          </Grid>
-        </Container>
+        {(this.state.view === 'list' ? this.renderComponentsList():this.renderComponentsCanvas())}
 
         <Dialog
           open={this.state.infoOpen}
@@ -277,7 +333,6 @@ class ResponsiveAppBar extends React.Component {
             {this.state.stencilMetaName}
           </DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
               <Typography variant="subtitle2" gutterBottom component="div" px={1}>
                 author: {this.state.stencilMetaAuthor}
               </Typography>
@@ -291,15 +346,77 @@ class ResponsiveAppBar extends React.Component {
               }}>
                 License
               </Button>
-              <Typography variant="body1" gutterTop component="div" px={1}>
+              <Typography variant="body1" component="div" px={1}>
                 {this.state.stencilMetaDescription}
               </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button  onClick={()=>{this.setState({infoOpen:false})}}>Close</Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={this.state.quickStartOpen}
+          onClose={()=>{this.setState({quickStartOpen:false})}}
+          maxWidth="lg"
+          fullWidth={true}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            Quick Start
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <video controls width="750">
+
+                <source src="https://user-images.githubusercontent.com/658612/160613837-4df9c606-9970-4608-9b86-e0069fb5ca66.mp4" type="video/mp4" />
+
+                Sorry, your browser doesn't support embedded videos.
+              </video>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button autofocus onClick={()=>{this.setState({infoOpen:false})}}>Close</Button>
+            <Button  onClick={()=>{this.setState({quickStartOpen:false})}}>Close</Button>
           </DialogActions>
         </Dialog>
+
+
+        <AppBar position="fixed" color="white" sx={{ top: 'auto', bottom: "0" }}>
+          <Toolbar variant="dense">
+              <Button onClick={()=>{
+                this.setState({quickStartOpen: true});
+              }}>
+                Quick start movie
+              </Button>
+
+         <Box sx={{ flexGrow: 1 }} />
+              <Button onClick={()=>{
+                window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md";
+              }}>
+                Documentation
+              </Button>
+
+              <Button onClick={()=>{
+                window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md#how-to-add-my-stencil-to-the-svg-stencils-library";
+              }}>
+                Add your Stencil
+              </Button>
+
+              <Button onClick={()=>{
+                window.location.href = "https://inkscape.org/~mipmip/%E2%98%85svg-stencil-export";
+              }}>
+                Inkscape Extension
+              </Button>
+
+              <IconButton onClick={()=>{
+                window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io";
+              }}>
+                <GitHubIcon />
+              </IconButton>
+
+          </Toolbar>
+        </AppBar>
 
       </ThemeProvider>
     );
