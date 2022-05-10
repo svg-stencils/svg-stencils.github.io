@@ -13,10 +13,20 @@
       </div>
     </div>
 
+    <div class="hidden" id="imgcelltpl2">
+      <div class="overflow-hidden border-2 hover:border-indigo-600 border-solid " style="SVGSTYLE">
+        <div class="aspect-w-16 aspect-h-10 cursor-grab">
+          <img src="SVGCOMP" class="">
+        </div>
+      </div>
+    </div>
+
     <div class="flex flex-col h-screen overflow-hidden">
 
       <header class="flex w-full justify-between text-center border-b border-grey p-4">
           {{ partial "libraries.html" . }}
+
+          <div style="width:100px;" id="canvasToolBar">list/canvas: <input type="checkbox" id="toggleCanvas" onClick="toggleCanvas()" /></div>
         <div class="">
           <img src="logo.png" class=""/>
         </div>
@@ -55,9 +65,7 @@
         </div>
 
         <section class="container mx-auto">
-
           {{ partial "stencils.html" . }}
-
         </section>
       </main>
 
