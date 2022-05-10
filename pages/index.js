@@ -13,6 +13,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
@@ -20,6 +25,13 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import InfoIcon from '@mui/icons-material/Info';
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const ComponentImgStyle = styled('img')({
   top: 0,
@@ -56,7 +68,16 @@ class ResponsiveAppBar extends React.Component {
       stencils: [],
       components: [],
       componentsData:{},
-      componentBaseUrl: ""
+      componentBaseUrl: "",
+      view: "list",
+      infoIconDisabled: true,
+      viewDisabled: true,
+      stencilMetaName: "",
+      stencilMetaDescription: "",
+      stencilMetaHomePage: "",
+      stencilMetaLicenseUrl: "",
+      stencilMetaAuthor: "",
+
     };
   }
 
@@ -81,6 +102,27 @@ class ResponsiveAppBar extends React.Component {
 
       this.setState({componentBaseUrl: value.url})
 
+      fetch(value.url + "/stencil-meta.json" ,{
+        mode: 'cors',
+        headers : {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+        .then(function(response){
+          return response.json();
+        })
+        .then((meta)=> {
+          this.setState({
+            stencilMetaName: meta.name,
+            stencilMetaDescription: meta.description,
+            stencilMetaHomePage: meta.homepage,
+            stencilMetaLicenseUrl: meta.license,
+            stencilMetaAuthor: meta.author,
+          });
+        });
+
+
       fetch(value.url + "/stencil-components.json" ,{
         mode: 'cors',
         headers : {
@@ -93,21 +135,46 @@ class ResponsiveAppBar extends React.Component {
         })
         .then((out)=> {
           if(out.components_data){
-            this.setState({componentsData: out.components_data});
+            this.setState( {
+              view: "canvas",
+              viewDisabled: false,
+              infoIconDisabled: false,
+              components: out.components,
+              componentsData: out.components_data}
+            );
           }
           else{
-            this.setState({componentsData: null});
+            this.setState( {
+              view: "list",
+              viewDisabled: true,
+              infoIconDisabled: false,
+              components: out.components,
+              componentsData: null}
+            );
           }
 
-          this.setState({components: out.components});
         });
     }
     else{
       console.log("unset components")
-      this.setState({components: []});
-      this.setState({componentsData: null});
+      this.setState( {
+        stencilMetaName: "",
+        stencilMetaDescription: "",
+        stencilMetaHomePage: "",
+        stencilMetaLicenseUrl: "",
+        stencilMetaAuthor: "",
+        infoIconDisabled: true,
+        components: [],
+        view: "list",
+        viewDisabled: true,
+        componentsData: null}
+      );
     }
 
+  }
+
+  handleChangeView(view){
+    this.setState({view:view})
   }
 
   renderComponent(component){
@@ -123,7 +190,6 @@ class ResponsiveAppBar extends React.Component {
   render(){
 
     const {components} = this.state;
-    console.log(components)
     const comps = components.map((component)=>{ return this.renderComponent(component)})
 
     return (
@@ -145,20 +211,46 @@ class ResponsiveAppBar extends React.Component {
                   getOptionLabel={(option) => option.name}
                   renderOption={(props, option, { selected }) => (
                     <li {...props}>
+                      {/*
                       <Checkbox
                         icon={icon}
                         checkedIcon={checkedIcon}
                         style={{ marginRight: 8 }}
                         checked={selected}
                       />
+                      */}
                       {option.name}
                     </li>
                   )}
-                  style={{ width: 500 }}
+                  style={{ minWidth: "300px" }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Stencils" placeholder="Select stencils to work with" />
+                    <TextField {...params} label="Stencil" placeholder="Select stencils to work with" />
                   )}
                 />
+
+                <IconButton onClick={()=>this.setState({infoOpen: true})} aria-label="info" disabled={this.state.infoIconDisabled} color="primary">
+                  <InfoIcon />
+                </IconButton>
+
+              </Box>
+
+
+              <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
+                <ToggleButtonGroup
+                  disabled={this.state.viewDisabled}
+                  value={this.state.view}
+                  exclusive
+                  size="small"
+                  activeOption={this.state.view}
+                  onChange={(e,view)=>this.handleChangeView(view)}
+                >
+                  <ToggleButton value="list" aria-label="list">
+                    <ViewModuleIcon />
+                  </ToggleButton>
+                  <ToggleButton value="canvas" aria-label="canvas">
+                    <ViewQuiltIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
 
               </Box>
 
@@ -174,6 +266,40 @@ class ResponsiveAppBar extends React.Component {
             {comps}
           </Grid>
         </Container>
+
+        <Dialog
+          open={this.state.infoOpen}
+          onClose={()=>{this.setState({infoOpen:false})}}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {this.state.stencilMetaName}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <Typography variant="subtitle2" gutterBottom component="div" px={1}>
+                author: {this.state.stencilMetaAuthor}
+              </Typography>
+              <Button onClick={()=>{
+                window.open(this.state.stencilMetaHomePage, '_blank').focus();
+              }}>
+                Homepage
+              </Button>
+              <Button onClick={()=>{
+                window.open(this.state.stencilMetaLicenseUrl, '_blank').focus();
+              }}>
+                License
+              </Button>
+              <Typography variant="body1" gutterTop component="div" px={1}>
+                {this.state.stencilMetaDescription}
+              </Typography>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button autofocus onClick={()=>{this.setState({infoOpen:false})}}>Close</Button>
+          </DialogActions>
+        </Dialog>
 
       </ThemeProvider>
     );
