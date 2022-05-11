@@ -34,16 +34,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import Fab from '@mui/material/Fab';
-
-const StyledFab = styled(Fab)({
-    position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-});
+import Stack from '@mui/material/Stack';
+import Slider from '@mui/material/Slider';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
 
 const ComponentImgStyle = styled('img')({
   top: 0,
@@ -57,7 +51,7 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 //import Image from 'next/image'
-import logoPic from '../public/logo.png'
+import logoPic from '../public/images/logo.png'
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -78,11 +72,15 @@ class ResponsiveAppBar extends React.Component {
 
   constructor(props) {
     super(props);
+    this.canvasRef = React.createRef();
     this.state = {
       stencils: [],
       components: [],
       componentsData:{},
       componentBaseUrl: "",
+      mostRight:0,
+      zoomValue: 30,
+      zoomHidden: true,
       view: "list",
       infoIconDisabled: true,
       viewDisabled: true,
@@ -111,6 +109,8 @@ class ResponsiveAppBar extends React.Component {
       .then((stencils)=> {
         this.setState({stencils: stencils});
       });
+
+
   }
 
   selectStencil(value){
@@ -151,9 +151,22 @@ class ResponsiveAppBar extends React.Component {
         })
         .then((out)=> {
           if(out.components_data){
+
+            let mostRight = 0;
+            let ctr = 0;
+            out.components.forEach((element, index, array)=>{
+                ctr++;
+                if(out.components_data[element].right > mostRight) mostRight = out.components_data[element].right
+
+                if (ctr === array.length) {
+                  this.setState({mostRight:mostRight})
+                }
+              });
+
             this.setState( {
               view: "canvas",
               viewDisabled: false,
+              zoomHidden: false,
               infoIconDisabled: false,
               components: out.components,
               componentsData: out.components_data}
@@ -163,6 +176,7 @@ class ResponsiveAppBar extends React.Component {
             this.setState( {
               view: "list",
               viewDisabled: true,
+              zoomHidden:true,
               infoIconDisabled: false,
               components: out.components,
               componentsData: null}
@@ -181,6 +195,7 @@ class ResponsiveAppBar extends React.Component {
         infoIconDisabled: true,
         components: [],
         view: "list",
+        zoomHidden:true,
         viewDisabled: true,
         componentsData: null}
       );
@@ -189,25 +204,44 @@ class ResponsiveAppBar extends React.Component {
   }
 
   handleChangeView(view){
-    this.setState({view:view})
+    let zoomHidden = false;
+
+    if(view === 'list'){
+      zoomHidden = true;
+    }
+
+    this.setState({
+      view: view,
+      zoomHidden:zoomHidden
+    })
   }
 
   renderComponentsCanvas(){
     const {components, componentsData} = this.state;
+
+    const canvasDefaultWidth = 3000;
+    const factor = canvasDefaultWidth / this.state.mostRight * this.state.zoomValue / 100;
+
     const comps = components.map((component)=>{
 
       if(componentsData[component]){
         const cd = componentsData[component];
+        const top = cd.top * factor
+        const left = cd.left * factor
+        const width = (cd.right - cd.left) * factor
+
+
+
         return (
-          <Box position='absolute' top={cd.top+"px"} left={cd.left+"px"} key={component} sx={{
-          cursor: 'grab',
+          <Box position='absolute' top={top+"px"} left={left+"px"} key={component} sx={{
+            cursor: 'grab',
             padding: '2px',
-          '&:hover': {
-            border: 'solid 2px green',
-            padding: '0',
-          },
-        }}>
-            <img src={this.state.componentBaseUrl + "/" + component} />
+            '&:hover': {
+              border: 'solid 2px green',
+              padding: '0',
+            },
+          }}>
+            <img src={this.state.componentBaseUrl + "/" + component} style={{width:width+"px"}} />
           </Box>
         )
 
@@ -256,7 +290,7 @@ class ResponsiveAppBar extends React.Component {
 
     return (
       <ThemeProvider theme={lightTheme}>
-        <AppBar position="static" color="white" position="sticky">
+        <AppBar position="static" color="white" position="sticky" style={{minWidth:"850px"}}>
           <Container maxWidth="xl">
             <Toolbar disableGutters={true}>
               <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
@@ -284,7 +318,7 @@ class ResponsiveAppBar extends React.Component {
                       {option.name}
                     </li>
                   )}
-                  style={{ minWidth: "300px" }}
+                  style={{ minWidth: "250px" }}
                   renderInput={(params) => (
                     <TextField {...params} label="Stencil" placeholder="Select stencils to work with" />
                   )}
@@ -314,6 +348,20 @@ class ResponsiveAppBar extends React.Component {
 
               </Box>
 
+              {(this.state.zoomHidden === true ? null :
+              <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
+                <Box sx={{ width: 150 }}>
+                  <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+                    <ZoomOutIcon />
+                    <Slider aria-label="Volume" value={this.state.zoomValue} onChange={(e, val)=>{
+                      this.setState({zoomValue:val});
+                    }} />
+                    <ZoomInIcon />
+                  </Stack>
+                </Box>
+              </Box>
+              )}
+
               <Box mx={1} sx={{ flexGrow: 0 }}>
                 <img src={logoPic.src} alt="Logo SVG Stencils" width="200" />
               </Box>
@@ -333,25 +381,25 @@ class ResponsiveAppBar extends React.Component {
             {this.state.stencilMetaName}
           </DialogTitle>
           <DialogContent>
-              <Typography variant="subtitle2" gutterBottom component="div" px={1}>
-                author: {this.state.stencilMetaAuthor}
-              </Typography>
-              <Button onClick={()=>{
-                window.open(this.state.stencilMetaHomePage, '_blank').focus();
-              }}>
-                Homepage
-              </Button>
-              <Button onClick={()=>{
-                window.open(this.state.stencilMetaLicenseUrl, '_blank').focus();
-              }}>
-                License
-              </Button>
-              <Typography variant="body1" component="div" px={1}>
-                {this.state.stencilMetaDescription}
-              </Typography>
+            <Typography variant="subtitle2" gutterBottom component="div" px={1}>
+              author: {this.state.stencilMetaAuthor}
+            </Typography>
+            <Button onClick={()=>{
+              window.open(this.state.stencilMetaHomePage, '_blank').focus();
+            }}>
+              Homepage
+            </Button>
+            <Button onClick={()=>{
+              window.open(this.state.stencilMetaLicenseUrl, '_blank').focus();
+            }}>
+              License
+            </Button>
+            <Typography variant="body1" component="div" px={1}>
+              {this.state.stencilMetaDescription}
+            </Typography>
           </DialogContent>
           <DialogActions>
-            <Button  onClick={()=>{this.setState({infoOpen:false})}}>Close</Button>
+            <Button onClick={()=>{this.setState({infoOpen:false})}}>Close</Button>
           </DialogActions>
         </Dialog>
 
@@ -377,43 +425,43 @@ class ResponsiveAppBar extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button  onClick={()=>{this.setState({quickStartOpen:false})}}>Close</Button>
+            <Button onClick={()=>{this.setState({quickStartOpen:false})}}>Close</Button>
           </DialogActions>
         </Dialog>
 
 
-        <AppBar position="fixed" color="white" sx={{ top: 'auto', bottom: "0" }}>
+        <AppBar position="fixed" color="white" sx={{ top: 'auto', bottom: "0" }} style={{minWidth:"850px"}}>
           <Toolbar variant="dense">
-              <Button onClick={()=>{
-                this.setState({quickStartOpen: true});
-              }}>
-                Quick start movie
-              </Button>
+            <Button onClick={()=>{
+              this.setState({quickStartOpen: true});
+            }}>
+              Quick start movie
+            </Button>
 
-         <Box sx={{ flexGrow: 1 }} />
-              <Button onClick={()=>{
-                window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md";
-              }}>
-                Documentation
-              </Button>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button onClick={()=>{
+              window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md";
+            }}>
+              Documentation
+            </Button>
 
-              <Button onClick={()=>{
-                window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md#how-to-add-my-stencil-to-the-svg-stencils-library";
-              }}>
-                Add your Stencil
-              </Button>
+            <Button onClick={()=>{
+              window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md#how-to-add-my-stencil-to-the-svg-stencils-library";
+            }}>
+              Add your Stencil
+            </Button>
 
-              <Button onClick={()=>{
-                window.location.href = "https://inkscape.org/~mipmip/%E2%98%85svg-stencil-export";
-              }}>
-                Inkscape Extension
-              </Button>
+            <Button onClick={()=>{
+              window.location.href = "https://inkscape.org/~mipmip/%E2%98%85svg-stencil-export";
+            }}>
+              Inkscape Extension
+            </Button>
 
-              <IconButton onClick={()=>{
-                window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io";
-              }}>
-                <GitHubIcon />
-              </IconButton>
+            <IconButton onClick={()=>{
+              window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io";
+            }}>
+              <GitHubIcon />
+            </IconButton>
 
           </Toolbar>
         </AppBar>
