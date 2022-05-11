@@ -50,7 +50,6 @@ const ComponentImgStyle = styled('img')({
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-//import Image from 'next/image'
 import logoPic from '../public/images/logo.png'
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -410,7 +409,8 @@ class ResponsiveAppBar extends React.Component {
             <DialogContentText id="alert-dialog-description">
               <video controls width="750">
 
-                <source src="https://user-images.githubusercontent.com/658612/160613837-4df9c606-9970-4608-9b86-e0069fb5ca66.mp4" type="video/mp4" />
+                {/*<source src="https://user-images.githubusercontent.com/658612/160613837-4df9c606-9970-4608-9b86-e0069fb5ca66.mp4" type="video/mp4" />*/}
+                <source src="/videos/svg-stencils-quickstart.webm" type="video/webm" />
 
                 Sorry, your browser doesn't support embedded videos.
               </video>
