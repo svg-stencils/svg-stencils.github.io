@@ -1,12 +1,24 @@
-
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
   }
 }
 
+function toggleCanvas(){
+  var toggleCanvas = document.getElementById("toggleCanvas").checked;
+  if(toggleCanvas === true){
+    document.getElementById("componentsListing").classList.add("hidden");
+    document.getElementById("componentsCanvas").classList.remove("hidden");
+  }
+  else{
+    document.getElementById("componentsCanvas").classList.add("hidden");
+    document.getElementById("componentsListing").classList.remove("hidden");
+  }
+
+}
+
 function selectChanged(){
-  url = document.getElementById("stencilLibs").value;
+  var url = document.getElementById("stencilLibs").value;
   openLib(url);
 }
 
@@ -19,8 +31,10 @@ function closeinfo(){
 
 function openLib(url){
   let svgcomp = "";
-  let components = [];
+  let componentsInListing = [];
+  let componentsInCanvas = [];
   let imagecelltpl = document.getElementById("imgcelltpl").innerHTML;
+  let imagecelltpl2 = document.getElementById("imgcelltpl2").innerHTML;
 
   fetch(url + "/stencil-meta.json")
     .then(res =>  res.json())
@@ -36,7 +50,6 @@ function openLib(url){
         document.getElementById("stencil-author").classList.add("hidden");
       }
 
-      console.log(out)
       if(out.homepage){
         document.getElementById("stencil-homepage").innerHTML = 'Homepage: <a  class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out" target="_blank" href="' + out.homepage +'">'+out.homepage+'</a>';
         document.getElementById("stencil-homepage").classList.remove("hidden");
@@ -65,6 +78,7 @@ function openLib(url){
     })
     .catch(err => { throw err });
 
+  var zoomfactor = 1
 
   fetch(url + "/stencil-components.json")
     .then(res =>  res.json())
@@ -73,9 +87,23 @@ function openLib(url){
       const start = async () => {
         await asyncForEach(out.components, async (c) => {
           svgcomp = url+"/"+c;
-          components.push(imagecelltpl.replace("SVGCOMP", svgcomp));
+          componentsInListing.push(imagecelltpl.replace("SVGCOMP", svgcomp));
+
+          if(out.components_data && out.components_data[c]){
+            var tmpcell = Object.assign(imagecelltpl2);
+            var width = out.components_data[c].right - out.components_data[c].left
+            componentsInCanvas.push(tmpcell.replace("SVGCOMP", svgcomp).replace("SVGSTYLE", "xwidth:"+width+"px;xheight:30px;position:absolute;top:"+out.components_data[c].top+"px;left:"+out.components_data[c].left+"px;"));
+            document.getElementById("canvasToolBar").classList.remove("hidden");
+          }
+          else{
+            document.getElementById("toggleCanvas").checked = false;
+            toggleCanvas();
+            document.getElementById("canvasToolBar").classList.add("hidden");
+          }
+
         });
-        document.getElementById("selectedLib").innerHTML = components.join("\n");
+        document.getElementById("componentsListing").innerHTML = componentsInListing.join("\n");
+        document.getElementById("componentsCanvas").innerHTML = componentsInCanvas.join("\n");
       }
       start();
 

@@ -6,8 +6,8 @@
 <title>SVG Templates</title>
 <link rel=stylesheet href=css/style.css>
 <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel=stylesheet>
-<link rel=icon type=image/png href=/favicon.png>
 <script src=js/main.js></script>
+<link rel=icon type=image/png href=/favicon.png>
 <script async defer data-website-id=36a8f40c-8161-4ae2-8731-57e46f8aae88 src=https://umami.quiqr.app/umami.js></script>
 </head>
 <body>
@@ -18,12 +18,20 @@
 </div>
 </div>
 </div>
+<div class=hidden id=imgcelltpl2>
+<div class="overflow-hidden border-2 hover:border-indigo-600 border-solid" style=svgstyle>
+<div class="aspect-w-16 aspect-h-10 cursor-grab">
+<img src=SVGCOMP>
+</div>
+</div>
+</div>
 <div class="flex flex-col h-screen overflow-hidden">
 <header class="flex w-full justify-between text-center border-b border-grey p-4">
 <div class=m-3>
 Select a stencil kit:
-<select onchange=selectChanged() id=stencilLibs><option value=https://svg-stencils.github.io/Inkscape-Mockup-Toolkit/>Inkscape Mockup Toolkit</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-patterns>Gnome GTK4 Patterns</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-light>Gnome GTK4 Widgets Light</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark>Gnome GTK4 Widgets Dark</option><option value=https://guilherme-svg.github.io/mockup-resources/pure-css-remix-widgets/>Pure CSS Remix Widgets</option><option value=https://mipmip.github.io/svg-stencil-italia-wire-kit-basics>Italia Wire Kit - Basics</option></select>
+<select onchange=selectChanged() id=stencilLibs><option value=http://127.0.0.1:8080>Inkscape Mockup Toolkit (local)</option><option value=https://svg-stencils.github.io/Inkscape-Mockup-Toolkit/>Inkscape Mockup Toolkit</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-patterns>Gnome GTK4 Patterns</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-light>Gnome GTK4 Widgets Light</option><option value=https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark>Gnome GTK4 Widgets Dark</option><option value=https://guilherme-svg.github.io/mockup-resources/pure-css-remix-widgets/>Pure CSS Remix Widgets</option><option value=https://mipmip.github.io/svg-stencil-italia-wire-kit-basics>Italia Wire Kit - Basics</option></select>
 </div>
+<div style=width:100px id=canvasToolBar>list/canvas: <input type=checkbox id=toggleCanvas onclick=toggleCanvas()></div>
 <div>
 <img src=logo.png>
 </div>
@@ -54,7 +62,9 @@ close
 </div>
 </div>
 <section class="container mx-auto">
-<div id=selectedLib class="grid gap-8 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+<div id=componentsListing class="hidden grid gap-8 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+</div>
+<div id=componentsCanvas class=mt-8 style=position:relative>
 </div>
 </section>
 </main>
