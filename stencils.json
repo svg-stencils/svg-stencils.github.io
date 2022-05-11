@@ -29,10 +29,19 @@
   },
   {
     "name": "IT Stencils (Isometric)",
-    "url":"https://mipmip.github.io/it-svg-stencils/stencil/"
+    "url":"https://mipmip.github.io/it-svg-stencils/stencil"
   },
   {
     "name": "Life from Illustrations.co",
-    "url": "https://mipmip.github.io/life-from-illustrations.co/"
+    "url": "https://mipmip.github.io/life-from-illustrations.co"
+  },
+  {
+    "name": "Touch Gestures Stencil",
+    "url": "https://mipmip.github.io/touch-gestures-svg-stencil"
+
+  },
+  {
+    "name": "Simple Flowchart",
+    "url": "https://mipmip.github.io/simple-flowchart-stencil/"
   }
 ]
