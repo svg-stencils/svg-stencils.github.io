@@ -22,31 +22,18 @@ library](./DOCUMENTATION.md).
 
 ## Development
 
-### Hugo
-
-To run svg-stencils on your local machine you need [Hugo](https://gohugo.io).
-
-clone the repository and then run:
+SVG Stencils is made with NextJS and Mui.com. To help with development clone the repo.
 
 ```
-hugo server
-```
+git@github.com:svg-stencils/svg-stencils.github.io.git # Or your fork URI
 
-### TailWind
-
-SVG Stencils layout is developed with [TailWind](https://tailwindcss.com). Install tailwind:
-
-```
-cd themes/hugothemesvgstencils
+cd svg-stencils.github.io
 npm install
+npm run dev
+
+open http://localhost:3000
 ```
 
-When you add TailWind classes inside the HTML, run `npm run csscompile` from the theme-root directory.
-
-```
-cd themes/hugothemesvgstencils
-npm run csscompile
-```
 
 ## Other Contributions
 

@@ -25,7 +25,7 @@ A minimal directory structure of a stencil is:
 ./component3.svg
 ```
 
-Use [other published stencils](https://github.com/svg-stencils/svg-stencils.github.io/blob/main/data/stencils.json) as example.
+Use [other published stencils](https://github.com/svg-stencils/svg-stencils.github.io/blob/main/public/stencils.json) as example.
 
 ## How to create a stencil library with the SVG Stencil Inkscape Extension
 
@@ -73,7 +73,7 @@ When the repo is pushed **setup github pages**.
 
 - Fork the the svg-stencil project ( https://github.com/svg-stencils/svg-stencils.github.io/fork )
 - Create your stencil-addition branch (`git checkout -b my-new-stencil`)
-- Add your the name and url of your extension to `data/stencils.json`. The files stencil-components.json and stencil-meta.json should exist.
+- Add your the name and url of your extension to `public/stencils.json`. The files stencil-components.json and stencil-meta.json should exist.
 
 ```json
   {
