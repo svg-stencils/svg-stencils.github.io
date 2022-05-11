@@ -97,11 +97,13 @@ class ResponsiveAppBar extends React.Component {
 
   componentDidMount() {
     fetch('/stencils.json' ,{
+      /*
       headers : {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json'
       }
+      */
     })
       .then(function(response){
         return response.json();
@@ -109,21 +111,13 @@ class ResponsiveAppBar extends React.Component {
       .then((stencils)=> {
         this.setState({stencils: stencils});
       });
-
-
   }
 
   selectStencil(value){
     if(value){
 
-      this.setState({componentBaseUrl: value.url})
 
       fetch(value.url + "/stencil-meta.json" ,{
-        mode: 'cors',
-        headers : {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
       })
         .then(function(response){
           return response.json();
@@ -140,11 +134,6 @@ class ResponsiveAppBar extends React.Component {
 
 
       fetch(value.url + "/stencil-components.json" ,{
-        mode: 'cors',
-        headers : {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
       })
         .then(function(response){
           return response.json();
@@ -164,6 +153,7 @@ class ResponsiveAppBar extends React.Component {
               });
 
             this.setState( {
+              componentBaseUrl: value.url,
               view: "canvas",
               viewDisabled: false,
               zoomHidden: false,
@@ -174,6 +164,7 @@ class ResponsiveAppBar extends React.Component {
           }
           else{
             this.setState( {
+              componentBaseUrl: value.url,
               view: "list",
               viewDisabled: true,
               zoomHidden:true,
@@ -187,6 +178,7 @@ class ResponsiveAppBar extends React.Component {
     }
     else{
       this.setState( {
+        componentBaseUrl: "",
         stencilMetaName: "",
         stencilMetaDescription: "",
         stencilMetaHomePage: "",

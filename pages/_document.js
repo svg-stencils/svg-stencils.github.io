@@ -7,7 +7,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link rel="icon" type="image/png" href="/favicon.png" />
+          <link rel="icon" type="image/png" href="/images/favicon.png" />
           <script async defer data-website-id="36a8f40c-8161-4ae2-8731-57e46f8aae88" src="https://umami.quiqr.app/umami.js"></script>
           <link
             rel="stylesheet"
