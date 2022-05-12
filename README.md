@@ -1,3 +1,5 @@
+![Contributions Welcome](https://img.shields.io/badge/Contributions-welcome-blue.svg)
+
 <p align="center">
     <img alt="logo" src="https://svg-stencils.github.io/images/logo-big.png">
 </p>
