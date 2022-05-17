@@ -49,6 +49,26 @@
     "url": "https://mipmip.github.io/mui-5-community-svg-stencils/alert"
   },
   {
+    "name": "MUI v5 Community - Avatar",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/avatar"
+  },
+  {
+    "name": "MUI v5 Community - Button",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/button"
+  },
+  {
+    "name": "MUI v5 Community - Checkbox",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/checkbox"
+  },
+  {
+    "name": "MUI v5 Community - Table",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/table"
+  },
+  {
+    "name": "MUI v5 Community - Text Field",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/text-field"
+  },
+  {
     "name": "Material Design Icons - Filled",
     "url": "https://mipmip.github.io/material-design-icons-svg-stencils/filled/"
   }
