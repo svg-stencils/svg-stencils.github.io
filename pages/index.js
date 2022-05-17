@@ -39,6 +39,11 @@ import Slider from '@mui/material/Slider';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import HttpIcon from '@mui/icons-material/Http';
+import InputAdornment from '@mui/material/InputAdornment';
+
 const ComponentImgStyle = styled('img')({
   top: 0,
   width: '100%',
@@ -90,6 +95,8 @@ class ResponsiveAppBar extends React.Component {
       stencilMetaHomePage: "",
       stencilMetaLicenseUrl: "",
       stencilMetaAuthor: "",
+      urlField: false,
+      urlFieldValue: ""
 
     };
   }
@@ -115,7 +122,6 @@ class ResponsiveAppBar extends React.Component {
   selectStencil(value){
     if(value){
 
-
       fetch(value.url + "/stencil-meta.json" ,{
       })
         .then(function(response){
@@ -129,6 +135,9 @@ class ResponsiveAppBar extends React.Component {
             stencilMetaLicenseUrl: meta.license,
             stencilMetaAuthor: meta.author,
           });
+        })
+        .catch((error) => {
+          console.error('Error:', error);
         });
 
 
@@ -173,6 +182,9 @@ class ResponsiveAppBar extends React.Component {
             );
           }
 
+        })
+        .catch((error) => {
+          console.error('Error:', error);
         });
     }
     else{
@@ -277,15 +289,15 @@ class ResponsiveAppBar extends React.Component {
     )
   }
 
-  render(){
+  handleUrlFieldChange(e){
+    this.setState({urlFieldValue: e.target.value},()=>{
+      this.selectStencil({url:this.state.urlFieldValue});
+    })
+  }
 
-    return (
-      <ThemeProvider theme={lightTheme}>
-        <AppBar position="static" color="white" position="sticky" style={{minWidth:"850px"}}>
-          <Container maxWidth="xl">
-            <Toolbar disableGutters={true}>
-              <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
-
+  renderStencilSelection(){
+    if(this.state.urlField === false){
+      return (
                 <Autocomplete
                   multiple={false}
                   id="checkboxes-tags-demo"
@@ -314,6 +326,46 @@ class ResponsiveAppBar extends React.Component {
                     <TextField {...params} label="Stencil" placeholder="Select stencils to work with" />
                   )}
                 />
+      )
+    }
+    else{
+      return (
+        <TextField label="Stencil URL" placeholder="Enter Stencil URL" size="small"
+          value={this.state.urlFieldValue}
+          onChange={(e)=>{this.handleUrlFieldChange(e)}}
+          style={{ minWidth: "250px" }}
+          variant="standard"
+        />
+      )
+
+    }
+
+  }
+
+  render(){
+
+    return (
+      <ThemeProvider theme={lightTheme}>
+        <AppBar position="static" color="white" position="sticky" style={{minWidth:"850px"}}>
+          <Container maxWidth="xl">
+            <Toolbar disableGutters={true}>
+              <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
+
+                <FormControlLabel
+                  value="top"
+                  control={<Switch color="primary" size="small" />}
+                  onChange={(e,val)=>{
+                    this.setState({urlField: val});
+                  }}
+                  label={
+                    <Box component="div" fontSize={13}>
+                      Use URL field
+                    </Box>
+                  }
+                  labelPlacement="bottom"
+                />
+
+                {this.renderStencilSelection()}
 
                 <IconButton onClick={()=>this.setState({infoOpen: true})} aria-label="info" disabled={this.state.infoIconDisabled} color="primary">
                   <InfoIcon />
