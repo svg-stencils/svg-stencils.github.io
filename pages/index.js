@@ -466,11 +466,25 @@ class ResponsiveAppBar extends React.Component {
               <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
                 <Box sx={{ width: 150 }}>
                   <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                    <ZoomOutIcon />
+                    <ZoomOutIcon onClick={()=>{
+                      if(this.state.zoomValue <= 5){
+                        this.setState({zoomValue: 0})
+                      }
+                      else{
+                        this.setState({zoomValue: this.state.zoomValue - 5})
+                      }
+                    }}/>
                     <Slider aria-label="Volume" value={this.state.zoomValue} onChange={(e, val)=>{
                       this.setState({zoomValue:val});
                     }} />
-                    <ZoomInIcon />
+                    <ZoomInIcon onClick={()=>{
+                      if(this.state.zoomValue >= 95){
+                      this.setState({zoomValue: 100})
+                    }
+                    else{
+                      this.setState({zoomValue: this.state.zoomValue + 5})
+                    }
+                  }}/>
                   </Stack>
                 </Box>
               </Box>
