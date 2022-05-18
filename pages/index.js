@@ -43,6 +43,10 @@ import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import HttpIcon from '@mui/icons-material/Http';
 import InputAdornment from '@mui/material/InputAdornment';
+import { withRouter } from "next/router"
+
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ComponentImgStyle = styled('img')({
   top: 0,
@@ -96,20 +100,15 @@ class ResponsiveAppBar extends React.Component {
       stencilMetaLicenseUrl: "",
       stencilMetaAuthor: "",
       urlField: false,
-      urlFieldValue: ""
+      urlFieldValue: "",
+      backdropOpen: false
 
     };
   }
 
   componentDidMount() {
+
     fetch('/stencils.json' ,{
-      /*
-      headers : {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Accept': 'application/json'
-      }
-      */
     })
       .then(function(response){
         return response.json();
@@ -119,8 +118,37 @@ class ResponsiveAppBar extends React.Component {
       });
   }
 
+  componentDidUpdate(prevProps) {
+    const { query } = this.props.router
+    // verify props have changed to avoid an infinite loop
+    if (query.stencil && query.stencil !== prevProps.router.query.stencil) {
+      this.setState({urlField: true, urlFieldValue: query.stencil},()=>{
+        this.selectStencil({url:this.state.urlFieldValue});
+      });
+    }
+  }
+
+  clearStencil(){
+    this.setState( {
+      componentBaseUrl: "",
+      stencilMetaName: "",
+      stencilMetaDescription: "",
+      stencilMetaHomePage: "",
+      stencilMetaLicenseUrl: "",
+      stencilMetaAuthor: "",
+      infoIconDisabled: true,
+      components: [],
+      view: "list",
+      zoomHidden:true,
+      viewDisabled: true,
+      componentsData: null}
+    );
+  }
+
   selectStencil(value){
     if(value){
+
+      this.setState({backdropOpen:true});
 
       fetch(value.url + "/stencil-meta.json" ,{
       })
@@ -138,6 +166,7 @@ class ResponsiveAppBar extends React.Component {
         })
         .catch((error) => {
           console.error('Error:', error);
+          this.setState({backdropOpen:false});
         });
 
 
@@ -167,7 +196,10 @@ class ResponsiveAppBar extends React.Component {
               zoomHidden: false,
               infoIconDisabled: false,
               components: out.components,
-              componentsData: out.components_data}
+              componentsData: out.components_data},
+              ()=>{
+                this.setState({backdropOpen:false})
+              }
             );
           }
           else{
@@ -178,30 +210,21 @@ class ResponsiveAppBar extends React.Component {
               zoomHidden:true,
               infoIconDisabled: false,
               components: out.components,
-              componentsData: null}
+              componentsData: null},
+              ()=>{
+                this.setState({backdropOpen:false})
+              }
             );
           }
 
         })
         .catch((error) => {
+          this.setState({backdropOpen:false});
           console.error('Error:', error);
         });
     }
     else{
-      this.setState( {
-        componentBaseUrl: "",
-        stencilMetaName: "",
-        stencilMetaDescription: "",
-        stencilMetaHomePage: "",
-        stencilMetaLicenseUrl: "",
-        stencilMetaAuthor: "",
-        infoIconDisabled: true,
-        components: [],
-        view: "list",
-        zoomHidden:true,
-        viewDisabled: true,
-        componentsData: null}
-      );
+      this.clearStencil();
     }
 
   }
@@ -352,10 +375,14 @@ class ResponsiveAppBar extends React.Component {
               <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
 
                 <FormControlLabel
-                  value="top"
-                  control={<Switch color="primary" size="small" />}
+                  control={<Switch checked={this.state.urlField} color="primary" size="small" />}
                   onChange={(e,val)=>{
-                    this.setState({urlField: val});
+                    this.setState({urlField: val}, ()=>{
+                      if(this.state.urlField === false){
+                        this.clearStencil();
+                      }
+
+                    });
                   }}
                   label={
                     <Box component="div" fontSize={13}>
@@ -413,6 +440,13 @@ class ResponsiveAppBar extends React.Component {
         </AppBar>
 
         {(this.state.view === 'list' ? this.renderComponentsList():this.renderComponentsCanvas())}
+
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={this.state.backdropOpen}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
 
         <Dialog
           open={this.state.infoOpen}
@@ -514,4 +548,5 @@ class ResponsiveAppBar extends React.Component {
     );
   }
 };
-export default ResponsiveAppBar;
+//export default ResponsiveAppBar;
+export default withRouter(ResponsiveAppBar);
