@@ -66,8 +66,6 @@ cd my-stencil-directory
 npm exec http-server -- --cors
 ```
 
-
-
 ## How to publish a stencil on Github Pages
 
 **Use the [Inkscape

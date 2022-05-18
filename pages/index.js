@@ -101,6 +101,7 @@ class ResponsiveAppBar extends React.Component {
       stencilMetaAuthor: "",
       urlField: false,
       urlFieldValue: "",
+      contextMenu: null,
       backdropOpen: false
 
     };
@@ -242,6 +243,44 @@ class ResponsiveAppBar extends React.Component {
     })
   }
 
+  showComponentMenu(event, component){
+    event.preventDefault();
+
+    if(this.state.contextMenu === null){
+      this.setState({contextMenu: { component: component, mouseX: event.clientX + 2, mouseY: event.clientY - 6 }});
+    }
+    else{
+      this.setState({contextMenu: null});
+    }
+  }
+
+  copySvgFileToClipboard(){
+    if(this.state.contextMenu !== null){
+
+      /*
+      const a = document.createElement('a');
+      a.href = this.state.componentBaseUrl + "/" + this.state.contextMenu.component;
+      a.setAttribute(
+        'download',
+        'file.svg',
+      );
+      //a.download = this.state.contextMenu.component;
+      document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+      a.click();
+      a.remove();  //afterwards we remove the element again
+      */
+
+      fetch(this.state.componentBaseUrl + "/" + this.state.contextMenu.component)
+        .then(r => r.text())
+        .then(text => {
+          navigator.clipboard.writeText(text)
+        })
+        .catch(console.error.bind(console));
+
+      this.setState({contextMenu: null});
+    }
+  }
+
   renderComponentsCanvas(){
     const {components, componentsData} = this.state;
 
@@ -256,10 +295,11 @@ class ResponsiveAppBar extends React.Component {
         const left = cd.left * factor
         const width = (cd.right - cd.left) * factor
 
-
-
         return (
-          <Box position='absolute' top={top+"px"} left={left+"px"} key={component} sx={{
+          <Box onContextMenu={(e)=>{
+            this.showComponentMenu(e, component);
+
+          }} position='absolute' top={top+"px"} left={left+"px"} key={component} sx={{
             cursor: 'grab',
             padding: '2px',
             '&:hover': {
@@ -290,7 +330,9 @@ class ResponsiveAppBar extends React.Component {
     const {components} = this.state;
     const comps = components.map((component)=>{ return (
       <Grid item xs={2} sm={4} md={4} key={component}  style={{border:"1px solid green", marginLeft:"-1px", marginTop:"-1px"}}>
-        <Box sx={{
+        <Box
+          onContextMenu={(e)=>{ this.showComponentMenu(e, component);}}
+          sx={{
           cursor: 'grab',
           pt: '100%',
           position: 'relative',
@@ -374,6 +416,7 @@ class ResponsiveAppBar extends React.Component {
             <Toolbar disableGutters={true}>
               <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
 
+                {/*
                 <FormControlLabel
                   control={<Switch checked={this.state.urlField} color="primary" size="small" />}
                   onChange={(e,val)=>{
@@ -391,6 +434,7 @@ class ResponsiveAppBar extends React.Component {
                   }
                   labelPlacement="bottom"
                 />
+                */}
 
                 {this.renderStencilSelection()}
 
@@ -441,6 +485,18 @@ class ResponsiveAppBar extends React.Component {
 
         {(this.state.view === 'list' ? this.renderComponentsList():this.renderComponentsCanvas())}
 
+      <Menu
+        open={this.state.contextMenu !== null}
+        onClose={()=>{this.setState({contextMenu:null})}}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          this.state.contextMenu !== null
+            ? { top: this.state.contextMenu.mouseY, left: this.state.contextMenu.mouseX }
+            : undefined
+        }
+      >
+        <MenuItem onClick={()=>{this.copySvgFileToClipboard()}}>Copy SVG</MenuItem>
+      </Menu>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={this.state.backdropOpen}
@@ -471,8 +527,8 @@ class ResponsiveAppBar extends React.Component {
             }}>
               License
             </Button>
-            <Typography variant="body1" component="div" px={1}>
-              {this.state.stencilMetaDescription}
+            <Typography variant="body1" component="div" px={1} sx={{whiteSpace: "pre-wrap"}}>
+              {this.state.stencilMetaDescription.replace(/(?:\\r\\n|\\r|\\n)/g, '\n')}
             </Typography>
           </DialogContent>
           <DialogActions>
@@ -506,6 +562,7 @@ class ResponsiveAppBar extends React.Component {
             <Button onClick={()=>{this.setState({quickStartOpen:false})}}>Close</Button>
           </DialogActions>
         </Dialog>
+
 
 
         <AppBar position="fixed" color="white" sx={{ top: 'auto', bottom: "0" }} style={{minWidth:"850px"}}>
