@@ -9,7 +9,6 @@ import ViewModuleIcon                         from '@mui/icons-material/ViewModu
 import ToggleButton                           from '@mui/material/ToggleButton';
 import ToggleButtonGroup                      from '@mui/material/ToggleButtonGroup';
 import InfoIcon                               from '@mui/icons-material/Info';
-//import Autocomplete                           from '@mui/material/Autocomplete';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import TextField                              from '@mui/material/TextField';
 import Container                              from '@mui/material/Container';
@@ -19,6 +18,7 @@ import AppBar     from '@mui/material/AppBar';
 import Box        from '@mui/material/Box';
 import Toolbar    from '@mui/material/Toolbar';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import ShareIcon from '@mui/icons-material/Share';
 const filter = createFilterOptions();
 
 const getValidUrl = (url = "") => {
@@ -33,65 +33,70 @@ const getValidUrl = (url = "") => {
 
 class HeaderAppBar extends React.Component {
 
+  constructor(props){
+    super(props)
+    this.state = {
+      inputValue: ""
+    }
+
+  }
+
   renderStencilSelection(){
-    if(this.props.urlField === false){
-      return (
-        <Autocomplete
-          multiple={false}
-          id="checkboxes-tags-demo"
-          options={this.props.stencils}
-          disableCloseOnSelect={false}
-          size="small"
-          onChange={(event, value)=>{
-            this.props.onSelectStencil(value);
-          }}
+    return (
+      <Autocomplete
+        value={this.props.selectedStencilValue}
+        multiple={false}
+        id="checkboxes-tags-demo"
+        options={this.props.stencils}
+        disableCloseOnSelect={false}
+        size="small"
+        onChange={(event, value)=>{
+          this.props.onSelectStencil(value);
+        }}
 
-          filterOptions={(options, params) => {
-            const filtered = filter(options, params);
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
 
-            const { inputValue } = params;
-            // Suggest the creation of a new value
-            const isExisting = options.some((option) => inputValue === option.title);
-            const urlValue = getValidUrl(inputValue);
+          const { inputValue } = params;
+          const isExisting = options.some((option) => inputValue === option.title);
+          const urlValue = getValidUrl(inputValue);
 
-            if (inputValue !== '' && !isExisting && urlValue) {
-              filtered.push({
-                inputValue,
-                url: `${inputValue}`,
-                name: `${inputValue}`,
-              });
-            }
+          if (inputValue !== '' && !isExisting && urlValue) {
+            filtered.push({
+              inputValue,
+              url: `${inputValue}`,
+              name: `${inputValue}`,
+            });
+          }
 
-            return filtered;
-          }}
-          selectOnFocus
-          clearOnBlur
-          handleHomeEndKeys
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
 
-          getOptionLabel={(option) => option.name}
-          renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              {option.name}
-            </li>
-          )}
-          style={{ minWidth: "250px" }}
-          renderInput={(params) => (
-            <TextField {...params} label="Stencil" placeholder="Select or enter stencil URL" />
-          )}
-        />
-      )
-    }
-    else{
-      return (
-        <TextField label="Stencil URL" placeholder="Enter Stencil URL" size="small"
-          value={this.props.urlFieldValue}
-          onChange={(e)=>{this.props.onUrlFieldValueChange(e.target.value)}}
-          style={{ minWidth: "250px" }}
-          variant="standard"
-        />
-      )
+        inputValue={this.state.inputValue}
+        onInputChange={(event, newInputValue) => {
+          this.setState({inputValue: newInputValue});
+        }}
 
-    }
+        getOptionLabel={(option) => {
+
+          if(option.name) return option.name;
+          return ""
+
+        }}
+        renderOption={(props, option, { selected }) => (
+          <li {...props}>
+            {option.name}
+          </li>
+        )}
+        style={{ minWidth: "250px" }}
+        renderInput={(params) => (
+          <TextField {...params} label={(getValidUrl(this.props.selectedStencilValue.name)?"Stencil URL":"Stencil")} placeholder="Select or enter stencil URL" />
+        )}
+      />
+    )
   }
 
   render(){
@@ -101,30 +106,14 @@ class HeaderAppBar extends React.Component {
           <Toolbar disableGutters={true}>
             <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
 
-              {/*
-                <FormControlLabel
-                  control={<Switch checked={this.state.urlField} color="primary" size="small" />}
-                  onChange={(e,val)=>{
-                    this.setState({urlField: val}, ()=>{
-                      if(this.state.urlField === false){
-                        this.clearStencil();
-                      }
-
-                    });
-                  }}
-                  label={
-                    <Box component="div" fontSize={13}>
-                      Use URL field
-                    </Box>
-                  }
-                  labelPlacement="bottom"
-                />
-                */}
-
               {this.renderStencilSelection()}
 
               <IconButton onClick={()=>this.props.onClickStencilInfo()} aria-label="info" disabled={this.props.infoIconDisabled} color="primary">
                 <InfoIcon />
+              </IconButton>
+
+              <IconButton onClick={(e)=>this.props.onClickShareStencilMenu(e)} aria-label="info" disabled={this.props.infoIconDisabled} color="primary">
+                <ShareIcon />
               </IconButton>
 
             </Box>
@@ -167,9 +156,7 @@ class HeaderAppBar extends React.Component {
           </Toolbar>
         </Container>
       </AppBar>
-
     )
-
   }
 }
 export default HeaderAppBar;

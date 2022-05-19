@@ -16,6 +16,7 @@ import Box                                    from '@mui/material/Box';
 import HeaderAppBar                           from '../app/components/HeaderAppBar'
 import DialogStencilInfo                      from '../app/components/DialogStencilInfo'
 import DialogQuickStart                       from '../app/components/DialogQuickStart'
+import DialogError                            from '../app/components/DialogError'
 import Footer                                 from '../app/components/Footer'
 
 import { withRouter }                         from "next/router"
@@ -51,6 +52,7 @@ class ResponsiveAppBar extends React.Component {
     this.canvasRef = React.createRef();
     this.state = {
       stencils: [],
+      selectedStencilValue: "",
       components: [],
       componentsData:{},
       componentBaseUrl: "",
@@ -67,9 +69,8 @@ class ResponsiveAppBar extends React.Component {
       stencilMetaHomePage: "",
       stencilMetaLicenseUrl: "",
       stencilMetaAuthor: "",
-      urlField: false,
-      urlFieldValue: "",
       contextMenu: null,
+      shareStencilMenu: null,
       backdropOpen: false
 
     };
@@ -91,15 +92,30 @@ class ResponsiveAppBar extends React.Component {
     const { query } = this.props.router
     // verify props have changed to avoid an infinite loop
     if (query.stencil && query.stencil !== prevProps.router.query.stencil) {
-      this.setState({urlField: true, urlFieldValue: query.stencil},()=>{
-        this.selectStencil({url:this.state.urlFieldValue});
-      });
+
+      if(query.stencil.startsWith("http://") || query.stencil.startsWith("https://")){
+        this.setState({selectedStencilValue: {name: query.stencil, url: query.stencil }});
+        this.selectStencil({url:query.stencil});
+      }
+      else{
+
+        const searchStencil= this.state.stencils.find((stencil) => stencil.name === query.stencil);
+        if(searchStencil){
+          this.setState({selectedStencilValue: {name: searchStencil.name, url: searchStencil.url }});
+          this.selectStencil({url:searchStencil.url});
+        }
+        else{
+          const errorText = `A stencil with the name ${query.stencil} is not in our Library. Please check for typo's`;
+          this.setState({errorOpen: true, errorTitle: `Sorry, can't find stencil ${query.stencil}`, errorText: errorText })
+        }
+      }
     }
   }
 
   clearStencil(){
     this.setState( {
       componentBaseUrl: "",
+      selectedStencilValue: "",
       stencilMetaName: "",
       stencilMetaDescription: "",
       stencilMetaHomePage: "",
@@ -146,6 +162,7 @@ class ResponsiveAppBar extends React.Component {
           return response.json();
         })
         .then((out)=> {
+          //TODO START REMOVE DUPLICATE CODE
           if(out.components_data){
 
             let mostRight = 0;
@@ -186,6 +203,7 @@ class ResponsiveAppBar extends React.Component {
               }
             );
           }
+          //TODO END REMOVE DUPLICATE CODE
 
         })
         .catch((error) => {
@@ -212,6 +230,15 @@ class ResponsiveAppBar extends React.Component {
     })
   }
 
+  showShareStencilMenu(event){
+    if(this.state.shareStencilMenu === null){
+      this.setState({shareStencilMenu: { mouseX: event.clientX + 2, mouseY: event.clientY - 6 }});
+    }
+    else{
+      this.setState({shareStencilMenu: null});
+    }
+  }
+
   showComponentMenu(event, component){
     event.preventDefault();
 
@@ -223,9 +250,9 @@ class ResponsiveAppBar extends React.Component {
     }
   }
 
+
   copySvgFileToClipboard(){
     if(this.state.contextMenu !== null){
-
 
       fetch(this.state.componentBaseUrl + "/" + this.state.contextMenu.component)
         .then(r => r.text())
@@ -312,33 +339,23 @@ class ResponsiveAppBar extends React.Component {
     )
   }
 
-  handleUrlFieldChange(value){
-    this.clearStencil();
-    if(value.trim() === ""){
-      this.setState({urlFieldValue: null, urlField: false});
-    }
-    else{
-      this.setState({urlFieldValue: value},()=>{
-        this.selectStencil({url:this.state.urlFieldValue});
-      })
-    }
-  }
-
   render(){
 
     return (
       <ThemeProvider theme={lightTheme}>
 
         <HeaderAppBar
+
           infoIconDisabled={this.state.infoIconDisabled}
           onClickStencilInfo={()=>this.setState({infoOpen: true})}
+          onClickShareStencilMenu={ (e) => { this.showShareStencilMenu(e) }}
 
+          selectedStencilValue={this.state.selectedStencilValue}
           stencils={this.state.stencils}
-          onSelectStencil={(stencil)=>this.selectStencil(stencil)}
-
-          urlField={this.state.urlField}
-          urlFieldValue={this.state.urlFieldValue}
-          onUrlFieldValueChange={(value)=>{this.handleUrlFieldChange(value)}}
+          onSelectStencil={(stencil)=>{
+            this.setState({selectedStencilValue: stencil});
+            this.selectStencil(stencil)}
+          }
 
           view={this.state.view}
           viewDisabled={this.state.viewDisabled}
@@ -383,6 +400,23 @@ class ResponsiveAppBar extends React.Component {
           <MenuItem onClick={()=>{this.copySvgFileToClipboard()}}>Copy SVG</MenuItem>
         </Menu>
 
+        <Menu
+          open={this.state.shareStencilMenu !== null}
+          onClose={()=>{this.setState({shareStencilMenu:null})}}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            this.state.shareStencilMenu !== null
+              ? { top: this.state.shareStencilMenu.mouseY, left: this.state.shareStencilMenu.mouseX }
+              : undefined
+          }
+        >
+          <MenuItem onClick={()=>{
+            const shareURL = "https://svg-stencils.github.io/?stencil="+this.state.selectedStencilValue.name;
+            navigator.clipboard.writeText(shareURL)
+            this.setState({shareStencilMenu: null});
+          }}>Copy Link</MenuItem>
+        </Menu>
+
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={this.state.backdropOpen}
@@ -403,6 +437,12 @@ class ResponsiveAppBar extends React.Component {
         <DialogQuickStart
           open={this.state.quickStartOpen}
           onClose={()=>{this.setState({quickStartOpen:false})}}
+        />
+        <DialogError
+          open={this.state.errorOpen}
+          onClose={()=>{this.setState({errorOpen:false})}}
+          title={this.state.errorTitle}
+          text={this.state.errorText}
         />
 
         <Footer
