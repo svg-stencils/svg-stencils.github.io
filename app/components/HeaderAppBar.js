@@ -9,7 +9,8 @@ import ViewModuleIcon                         from '@mui/icons-material/ViewModu
 import ToggleButton                           from '@mui/material/ToggleButton';
 import ToggleButtonGroup                      from '@mui/material/ToggleButtonGroup';
 import InfoIcon                               from '@mui/icons-material/Info';
-import Autocomplete                           from '@mui/material/Autocomplete';
+//import Autocomplete                           from '@mui/material/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import TextField                              from '@mui/material/TextField';
 import Container                              from '@mui/material/Container';
 import Button     from '@mui/material/Button';
@@ -18,6 +19,17 @@ import AppBar     from '@mui/material/AppBar';
 import Box        from '@mui/material/Box';
 import Toolbar    from '@mui/material/Toolbar';
 import GitHubIcon from '@mui/icons-material/GitHub';
+const filter = createFilterOptions();
+
+const getValidUrl = (url = "") => {
+  let newUrl = url.trim().replace(/\s/g, "");
+
+  if(newUrl.startsWith("http://") || newUrl.startsWith("https://")){
+    return newUrl
+  }
+
+  return null;
+}
 
 class HeaderAppBar extends React.Component {
 
@@ -32,8 +44,30 @@ class HeaderAppBar extends React.Component {
           size="small"
           onChange={(event, value)=>{
             this.props.onSelectStencil(value);
-            //this.selectStencil(value);
           }}
+
+          filterOptions={(options, params) => {
+            const filtered = filter(options, params);
+
+            const { inputValue } = params;
+            // Suggest the creation of a new value
+            const isExisting = options.some((option) => inputValue === option.title);
+            const urlValue = getValidUrl(inputValue);
+
+            if (inputValue !== '' && !isExisting && urlValue) {
+              filtered.push({
+                inputValue,
+                url: `${inputValue}`,
+                name: `${inputValue}`,
+              });
+            }
+
+            return filtered;
+          }}
+          selectOnFocus
+          clearOnBlur
+          handleHomeEndKeys
+
           getOptionLabel={(option) => option.name}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
@@ -42,7 +76,7 @@ class HeaderAppBar extends React.Component {
           )}
           style={{ minWidth: "250px" }}
           renderInput={(params) => (
-            <TextField {...params} label="Stencil" placeholder="Select stencils to work with" />
+            <TextField {...params} label="Stencil" placeholder="Select or enter stencil URL" />
           )}
         />
       )

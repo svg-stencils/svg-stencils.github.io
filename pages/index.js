@@ -1,54 +1,25 @@
 import * as React                             from 'react';
-import Typography                             from '@mui/material/Typography';
+
+import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
+
 import Menu                                   from '@mui/material/Menu';
 import MenuIcon                               from '@mui/icons-material/Menu';
-import Container                              from '@mui/material/Container';
-import Avatar                                 from '@mui/material/Avatar';
-import Button                                 from '@mui/material/Button';
-import Tooltip                                from '@mui/material/Tooltip';
 import MenuItem                               from '@mui/material/MenuItem';
-import AdbIcon                                from '@mui/icons-material/Adb';
-import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
-import ViewListIcon                           from '@mui/icons-material/ViewList';
-import ViewModuleIcon                         from '@mui/icons-material/ViewModule';
-import ViewQuiltIcon                          from '@mui/icons-material/ViewQuilt';
-import ToggleButton                           from '@mui/material/ToggleButton';
-import ToggleButtonGroup                      from '@mui/material/ToggleButtonGroup';
 
-import Checkbox                               from '@mui/material/Checkbox';
+import Backdrop                               from '@mui/material/Backdrop';
+import CircularProgress                       from '@mui/material/CircularProgress';
+
+import Container                              from '@mui/material/Container';
 import Grid                                   from '@mui/material/Grid';
-import TextField                              from '@mui/material/TextField';
-import Autocomplete                           from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon               from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon                           from '@mui/icons-material/CheckBox';
-import InfoIcon                               from '@mui/icons-material/Info';
-
-import IconButton                             from '@mui/material/IconButton';
-import AppBar                                 from '@mui/material/AppBar';
 import Box                                    from '@mui/material/Box';
-import Toolbar                                from '@mui/material/Toolbar';
 
 import HeaderAppBar                           from '../app/components/HeaderAppBar'
 import DialogStencilInfo                      from '../app/components/DialogStencilInfo'
 import DialogQuickStart                       from '../app/components/DialogQuickStart'
 import Footer                                 from '../app/components/Footer'
 
-import Stack                                  from '@mui/material/Stack';
-import Slider                                 from '@mui/material/Slider';
-import ZoomOutIcon                            from '@mui/icons-material/ZoomOut';
-import ZoomInIcon                             from '@mui/icons-material/ZoomIn';
-
-import Switch                                 from '@mui/material/Switch';
-import FormControlLabel                       from '@mui/material/FormControlLabel';
-import HttpIcon                               from '@mui/icons-material/Http';
-import InputAdornment                         from '@mui/material/InputAdornment';
 import { withRouter }                         from "next/router"
 
-import Backdrop                               from '@mui/material/Backdrop';
-import CircularProgress                       from '@mui/material/CircularProgress';
-
-
-import logoPic                                from '../public/images/logo.png'
 
 const ComponentImgStyle = styled('img')({
   top: 0,
@@ -57,9 +28,6 @@ const ComponentImgStyle = styled('img')({
   objectFit: 'scale-down',
   position: 'absolute',
 });
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -147,6 +115,7 @@ class ResponsiveAppBar extends React.Component {
   }
 
   selectStencil(value){
+
     if(value){
 
       this.setState({backdropOpen:true});
@@ -257,18 +226,6 @@ class ResponsiveAppBar extends React.Component {
   copySvgFileToClipboard(){
     if(this.state.contextMenu !== null){
 
-      /*
-      const a = document.createElement('a');
-      a.href = this.state.componentBaseUrl + "/" + this.state.contextMenu.component;
-      a.setAttribute(
-        'download',
-        'file.svg',
-      );
-      //a.download = this.state.contextMenu.component;
-      document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
-      a.click();
-      a.remove();  //afterwards we remove the element again
-      */
 
       fetch(this.state.componentBaseUrl + "/" + this.state.contextMenu.component)
         .then(r => r.text())
@@ -325,6 +282,7 @@ class ResponsiveAppBar extends React.Component {
     )
 
   }
+
   renderComponentsList(){
 
     const {components} = this.state;
@@ -356,53 +314,13 @@ class ResponsiveAppBar extends React.Component {
 
   handleUrlFieldChange(value){
     this.clearStencil();
-    this.setState({urlFieldValue: value},()=>{
-      this.selectStencil({url:this.state.urlFieldValue});
-    })
-  }
-
-  renderStencilSelection(){
-    if(this.state.urlField === false){
-      return (
-        <Autocomplete
-          multiple={false}
-          id="checkboxes-tags-demo"
-          options={this.state.stencils}
-          disableCloseOnSelect={false}
-          size="small"
-          onChange={(event, value)=>{
-            this.selectStencil(value);
-          }}
-          getOptionLabel={(option) => option.name}
-          renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              {/*
-                      <Checkbox
-                        icon={icon}
-                        checkedIcon={checkedIcon}
-                        style={{ marginRight: 8 }}
-                        checked={selected}
-                      />
-                      */}
-              {option.name}
-            </li>
-          )}
-          style={{ minWidth: "250px" }}
-          renderInput={(params) => (
-            <TextField {...params} label="Stencil" placeholder="Select stencils to work with" />
-          )}
-        />
-      )
+    if(value.trim() === ""){
+      this.setState({urlFieldValue: null, urlField: false});
     }
     else{
-      return (
-        <TextField label="Stencil URL" placeholder="Enter Stencil URL" size="small"
-          value={this.state.urlFieldValue}
-          onChange={(e)=>{this.handleUrlFieldChange(e)}}
-          style={{ minWidth: "250px" }}
-          variant="standard"
-        />
-      )
+      this.setState({urlFieldValue: value},()=>{
+        this.selectStencil({url:this.state.urlFieldValue});
+      })
     }
   }
 
