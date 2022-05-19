@@ -1,3 +1,4 @@
+/*
 module.exports = {
   async headers() {
     return [
@@ -19,3 +20,4 @@ module.exports = {
     ]
   },
 }
+*/

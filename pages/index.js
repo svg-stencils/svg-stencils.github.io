@@ -1,52 +1,54 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import * as React                             from 'react';
+import Typography                             from '@mui/material/Typography';
+import Menu                                   from '@mui/material/Menu';
+import MenuIcon                               from '@mui/icons-material/Menu';
+import Container                              from '@mui/material/Container';
+import Avatar                                 from '@mui/material/Avatar';
+import Button                                 from '@mui/material/Button';
+import Tooltip                                from '@mui/material/Tooltip';
+import MenuItem                               from '@mui/material/MenuItem';
+import AdbIcon                                from '@mui/icons-material/Adb';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
-import ViewListIcon from '@mui/icons-material/ViewList';
-import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ViewListIcon                           from '@mui/icons-material/ViewList';
+import ViewModuleIcon                         from '@mui/icons-material/ViewModule';
+import ViewQuiltIcon                          from '@mui/icons-material/ViewQuilt';
+import ToggleButton                           from '@mui/material/ToggleButton';
+import ToggleButtonGroup                      from '@mui/material/ToggleButtonGroup';
 
-import Checkbox from '@mui/material/Checkbox';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import InfoIcon from '@mui/icons-material/Info';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import Checkbox                               from '@mui/material/Checkbox';
+import Grid                                   from '@mui/material/Grid';
+import TextField                              from '@mui/material/TextField';
+import Autocomplete                           from '@mui/material/Autocomplete';
+import CheckBoxOutlineBlankIcon               from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon                           from '@mui/icons-material/CheckBox';
+import InfoIcon                               from '@mui/icons-material/Info';
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import IconButton                             from '@mui/material/IconButton';
+import AppBar                                 from '@mui/material/AppBar';
+import Box                                    from '@mui/material/Box';
+import Toolbar                                from '@mui/material/Toolbar';
 
-import Stack from '@mui/material/Stack';
-import Slider from '@mui/material/Slider';
-import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import HeaderAppBar                           from '../app/components/HeaderAppBar'
+import DialogStencilInfo                      from '../app/components/DialogStencilInfo'
+import DialogQuickStart                       from '../app/components/DialogQuickStart'
+import Footer                                 from '../app/components/Footer'
 
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import HttpIcon from '@mui/icons-material/Http';
-import InputAdornment from '@mui/material/InputAdornment';
-import { withRouter } from "next/router"
+import Stack                                  from '@mui/material/Stack';
+import Slider                                 from '@mui/material/Slider';
+import ZoomOutIcon                            from '@mui/icons-material/ZoomOut';
+import ZoomInIcon                             from '@mui/icons-material/ZoomIn';
 
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Switch                                 from '@mui/material/Switch';
+import FormControlLabel                       from '@mui/material/FormControlLabel';
+import HttpIcon                               from '@mui/icons-material/Http';
+import InputAdornment                         from '@mui/material/InputAdornment';
+import { withRouter }                         from "next/router"
+
+import Backdrop                               from '@mui/material/Backdrop';
+import CircularProgress                       from '@mui/material/CircularProgress';
+
+
+import logoPic                                from '../public/images/logo.png'
 
 const ComponentImgStyle = styled('img')({
   top: 0,
@@ -58,8 +60,6 @@ const ComponentImgStyle = styled('img')({
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-import logoPic from '../public/images/logo.png'
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -182,13 +182,13 @@ class ResponsiveAppBar extends React.Component {
             let mostRight = 0;
             let ctr = 0;
             out.components.forEach((element, index, array)=>{
-                ctr++;
-                if(out.components_data[element].right > mostRight) mostRight = out.components_data[element].right
+              ctr++;
+              if(out.components_data[element].right > mostRight) mostRight = out.components_data[element].right
 
-                if (ctr === array.length) {
-                  this.setState({mostRight:mostRight})
-                }
-              });
+              if (ctr === array.length) {
+                this.setState({mostRight:mostRight})
+              }
+            });
 
             this.setState( {
               componentBaseUrl: value.url,
@@ -333,13 +333,13 @@ class ResponsiveAppBar extends React.Component {
         <Box
           onContextMenu={(e)=>{ this.showComponentMenu(e, component);}}
           sx={{
-          cursor: 'grab',
-          pt: '100%',
-          position: 'relative',
-          '&:hover': {
-            backgroundColor: 'hover',
-          },
-        }}>
+            cursor: 'grab',
+            pt: '100%',
+            position: 'relative',
+            '&:hover': {
+              backgroundColor: 'hover',
+            },
+          }}>
           <ComponentImgStyle src={this.state.componentBaseUrl + "/" + component} />
         </Box>
       </Grid>
@@ -354,8 +354,9 @@ class ResponsiveAppBar extends React.Component {
     )
   }
 
-  handleUrlFieldChange(e){
-    this.setState({urlFieldValue: e.target.value},()=>{
+  handleUrlFieldChange(value){
+    this.clearStencil();
+    this.setState({urlFieldValue: value},()=>{
       this.selectStencil({url:this.state.urlFieldValue});
     })
   }
@@ -363,19 +364,19 @@ class ResponsiveAppBar extends React.Component {
   renderStencilSelection(){
     if(this.state.urlField === false){
       return (
-                <Autocomplete
-                  multiple={false}
-                  id="checkboxes-tags-demo"
-                  options={this.state.stencils}
-                  disableCloseOnSelect={false}
-                  size="small"
-                  onChange={(event, value)=>{
-                    this.selectStencil(value);
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  renderOption={(props, option, { selected }) => (
-                    <li {...props}>
-                      {/*
+        <Autocomplete
+          multiple={false}
+          id="checkboxes-tags-demo"
+          options={this.state.stencils}
+          disableCloseOnSelect={false}
+          size="small"
+          onChange={(event, value)=>{
+            this.selectStencil(value);
+          }}
+          getOptionLabel={(option) => option.name}
+          renderOption={(props, option, { selected }) => (
+            <li {...props}>
+              {/*
                       <Checkbox
                         icon={icon}
                         checkedIcon={checkedIcon}
@@ -383,14 +384,14 @@ class ResponsiveAppBar extends React.Component {
                         checked={selected}
                       />
                       */}
-                      {option.name}
-                    </li>
-                  )}
-                  style={{ minWidth: "250px" }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Stencil" placeholder="Select stencils to work with" />
-                  )}
-                />
+              {option.name}
+            </li>
+          )}
+          style={{ minWidth: "250px" }}
+          renderInput={(params) => (
+            <TextField {...params} label="Stencil" placeholder="Select stencils to work with" />
+          )}
+        />
       )
     }
     else{
@@ -402,115 +403,68 @@ class ResponsiveAppBar extends React.Component {
           variant="standard"
         />
       )
-
     }
-
   }
 
   render(){
 
     return (
       <ThemeProvider theme={lightTheme}>
-        <AppBar position="static" color="white" position="sticky" style={{minWidth:"850px"}}>
-          <Container maxWidth="xl">
-            <Toolbar disableGutters={true}>
-              <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
 
-                {/*
-                <FormControlLabel
-                  control={<Switch checked={this.state.urlField} color="primary" size="small" />}
-                  onChange={(e,val)=>{
-                    this.setState({urlField: val}, ()=>{
-                      if(this.state.urlField === false){
-                        this.clearStencil();
-                      }
+        <HeaderAppBar
+          infoIconDisabled={this.state.infoIconDisabled}
+          onClickStencilInfo={()=>this.setState({infoOpen: true})}
 
-                    });
-                  }}
-                  label={
-                    <Box component="div" fontSize={13}>
-                      Use URL field
-                    </Box>
-                  }
-                  labelPlacement="bottom"
-                />
-                */}
+          stencils={this.state.stencils}
+          onSelectStencil={(stencil)=>this.selectStencil(stencil)}
 
-                {this.renderStencilSelection()}
+          urlField={this.state.urlField}
+          urlFieldValue={this.state.urlFieldValue}
+          onUrlFieldValueChange={(value)=>{this.handleUrlFieldChange(value)}}
 
-                <IconButton onClick={()=>this.setState({infoOpen: true})} aria-label="info" disabled={this.state.infoIconDisabled} color="primary">
-                  <InfoIcon />
-                </IconButton>
+          view={this.state.view}
+          viewDisabled={this.state.viewDisabled}
+          onChangeView={(view)=>this.handleChangeView(view)}
 
-              </Box>
+          zoomHidden={this.state.zoomHidden}
+          zoomValue={this.state.zoomValue}
+          onZoomIn={()=>{
+            if(this.state.zoomValue >= 95){
+              this.setState({zoomValue: 100})
+            }
+            else{
+              this.setState({zoomValue: this.state.zoomValue + 5})
+            }
+          }}
+          onZoomOut={()=>{
+            if(this.state.zoomValue <= 5){
+              this.setState({zoomValue: 0})
+            }
+            else{
+              this.setState({zoomValue: this.state.zoomValue - 5})
+            }
+          }}
+          onZoomSlide={(val)=>{
+            this.setState({zoomValue:val});
+          }}
 
-              <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
-                <ToggleButtonGroup
-                  disabled={this.state.viewDisabled}
-                  value={this.state.view}
-                  exclusive
-                  size="small"
-                  onChange={(e,view)=>this.handleChangeView(view)}
-                >
-                  <ToggleButton value="list" aria-label="list">
-                    <ViewModuleIcon />
-                  </ToggleButton>
-                  <ToggleButton value="canvas" aria-label="canvas">
-                    <ViewQuiltIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
-
-              </Box>
-
-              {(this.state.zoomHidden === true ? null :
-              <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
-                <Box sx={{ width: 150 }}>
-                  <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                    <ZoomOutIcon onClick={()=>{
-                      if(this.state.zoomValue <= 5){
-                        this.setState({zoomValue: 0})
-                      }
-                      else{
-                        this.setState({zoomValue: this.state.zoomValue - 5})
-                      }
-                    }}/>
-                    <Slider aria-label="Volume" value={this.state.zoomValue} onChange={(e, val)=>{
-                      this.setState({zoomValue:val});
-                    }} />
-                    <ZoomInIcon onClick={()=>{
-                      if(this.state.zoomValue >= 95){
-                      this.setState({zoomValue: 100})
-                    }
-                    else{
-                      this.setState({zoomValue: this.state.zoomValue + 5})
-                    }
-                  }}/>
-                  </Stack>
-                </Box>
-              </Box>
-              )}
-
-              <Box mx={1} sx={{ flexGrow: 0 }}>
-                <img src={logoPic.src} alt="Logo SVG Stencils" width="200" />
-              </Box>
-            </Toolbar>
-          </Container>
-        </AppBar>
+        />
 
         {(this.state.view === 'list' ? this.renderComponentsList():this.renderComponentsCanvas())}
 
-      <Menu
-        open={this.state.contextMenu !== null}
-        onClose={()=>{this.setState({contextMenu:null})}}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          this.state.contextMenu !== null
-            ? { top: this.state.contextMenu.mouseY, left: this.state.contextMenu.mouseX }
-            : undefined
-        }
-      >
-        <MenuItem onClick={()=>{this.copySvgFileToClipboard()}}>Copy SVG</MenuItem>
-      </Menu>
+        <Menu
+          open={this.state.contextMenu !== null}
+          onClose={()=>{this.setState({contextMenu:null})}}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            this.state.contextMenu !== null
+              ? { top: this.state.contextMenu.mouseY, left: this.state.contextMenu.mouseX }
+              : undefined
+          }
+        >
+          <MenuItem onClick={()=>{this.copySvgFileToClipboard()}}>Copy SVG</MenuItem>
+        </Menu>
+
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={this.state.backdropOpen}
@@ -518,106 +472,29 @@ class ResponsiveAppBar extends React.Component {
           <CircularProgress color="inherit" />
         </Backdrop>
 
-        <Dialog
+        <DialogStencilInfo
           open={this.state.infoOpen}
           onClose={()=>{this.setState({infoOpen:false})}}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {this.state.stencilMetaName}
-          </DialogTitle>
-          <DialogContent>
-            <Typography variant="subtitle2" gutterBottom component="div" px={1}>
-              author: {this.state.stencilMetaAuthor}
-            </Typography>
-            <Button onClick={()=>{
-              window.open(this.state.stencilMetaHomePage, '_blank').focus();
-            }}>
-              Homepage
-            </Button>
-            <Button onClick={()=>{
-              window.open(this.state.stencilMetaLicenseUrl, '_blank').focus();
-            }}>
-              License
-            </Button>
-            <Typography variant="body1" component="div" px={1} sx={{whiteSpace: "pre-wrap"}}>
-              {this.state.stencilMetaDescription.replace(/(?:\\r\\n|\\r|\\n)/g, '\n')}
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={()=>{this.setState({infoOpen:false})}}>Close</Button>
-          </DialogActions>
-        </Dialog>
+          title={this.state.stencilMetaName}
+          author={this.state.stencilMetaAuthor}
+          homepage={this.state.stencilMetaHomePage}
+          licenceUrl={this.state.stencilMetaLicenseUrl}
+          description={this.state.stencilMetaDescription}
+        />
 
-        <Dialog
+        <DialogQuickStart
           open={this.state.quickStartOpen}
           onClose={()=>{this.setState({quickStartOpen:false})}}
-          maxWidth="lg"
-          fullWidth={true}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            Quick Start
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              <video controls width="750">
+        />
 
-                {/*<source src="https://user-images.githubusercontent.com/658612/160613837-4df9c606-9970-4608-9b86-e0069fb5ca66.mp4" type="video/mp4" />*/}
-                <source src="/videos/svg-stencils-quickstart.webm" type="video/webm" />
-
-                Sorry, your browser doesn't support embedded videos.
-              </video>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={()=>{this.setState({quickStartOpen:false})}}>Close</Button>
-          </DialogActions>
-        </Dialog>
-
-
-
-        <AppBar position="fixed" color="white" sx={{ top: 'auto', bottom: "0" }} style={{minWidth:"850px"}}>
-          <Toolbar variant="dense">
-            <Button onClick={()=>{
-              this.setState({quickStartOpen: true});
-            }}>
-              Quick start movie
-            </Button>
-
-            <Box sx={{ flexGrow: 1 }} />
-            <Button onClick={()=>{
-              window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md";
-            }}>
-              Documentation
-            </Button>
-
-            <Button onClick={()=>{
-              window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md#how-to-add-my-stencil-to-the-svg-stencils-library";
-            }}>
-              Add your Stencil
-            </Button>
-
-            <Button onClick={()=>{
-              window.location.href = "https://inkscape.org/~mipmip/%E2%98%85svg-stencil-export";
-            }}>
-              Inkscape Extension
-            </Button>
-
-            <IconButton onClick={()=>{
-              window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io";
-            }}>
-              <GitHubIcon />
-            </IconButton>
-
-          </Toolbar>
-        </AppBar>
+        <Footer
+          onClick={()=>{
+            this.setState({quickStartOpen: true});
+          }}
+        />
 
       </ThemeProvider>
     );
   }
 };
-//export default ResponsiveAppBar;
 export default withRouter(ResponsiveAppBar);
