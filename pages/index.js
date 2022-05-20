@@ -268,32 +268,74 @@ class ResponsiveAppBar extends React.Component {
   renderComponentsCanvas(){
     const {components, componentsData} = this.state;
 
-    const canvasDefaultWidth = 3000;
+    const canvasDefaultWidth = 7000;
     const factor = canvasDefaultWidth / this.state.mostRight * this.state.zoomValue / 100;
+    //const factor = 1
 
     const comps = components.map((component)=>{
 
-      if(componentsData[component]){
-        const cd = componentsData[component];
-        const top = cd.top * factor
-        const left = cd.left * factor
-        const width = (cd.right - cd.left) * factor
+      if(componentsData && componentsData[component]){
+        const cdata = componentsData[component];
 
-        return (
-          <Box onContextMenu={(e)=>{
-            this.showComponentMenu(e, component);
+        const top = cdata.top * factor
+        const left = cdata.left * factor
 
-          }} position='absolute' top={top+"px"} left={left+"px"} key={component} sx={{
-            cursor: 'grab',
-            padding: '2px',
-            '&:hover': {
-              border: 'solid 2px green',
-              padding: '0',
-            },
-          }}>
-            <img src={this.state.componentBaseUrl + "/" + component} style={{width:width+"px"}} />
-          </Box>
-        )
+        let width = (cdata.right - cdata.left) * factor
+
+        let img = new Image();
+        img.onload = function() {
+          console.log("---------------------------")
+          console.log("Calc Image Width: ", width)
+          console.log("Real Image Width: ", (this.width * factor))
+        };
+        img.src = this.state.componentBaseUrl + "/" + component
+
+        let cssWidth;
+        if(width === 0){
+          cssWidth = (100*factor)+"%";
+        }
+        else{
+          cssWidth = width + "px";
+        }
+
+        if(cdata.type && cdata.type === "locked"){
+          console.log(cdata)
+
+          return (
+            <Box onContextMenu={(e)=>{
+              this.showComponentMenu(e, component);
+
+            }} position='absolute' top={top+"px"} left={left+"px"} key={component} sx={{
+              padding: '0px',
+            }}>
+              <img onDragStart={(e)=>{e.preventDefault()}} src={this.state.componentBaseUrl + "/" + component}
+                style={{width:cssWidth}}
+              />
+            </Box>
+          )
+        }
+        else{
+          return (
+            <Box onContextMenu={(e)=>{
+              this.showComponentMenu(e, component);
+              }}
+              position='absolute' top={top+"px"} left={left+"px"} key={component}
+              sx={{
+                cursor: 'grab',
+                padding: '2px',
+                '&:hover': {
+                  border: 'solid 2px green',
+                  padding: '0',
+                },
+              }}>
+
+              <img title={width} src={this.state.componentBaseUrl + "/" + component} style={{width:cssWidth}} />
+
+            </Box>
+          )
+
+        }
+
 
       }
       return null
@@ -301,34 +343,43 @@ class ResponsiveAppBar extends React.Component {
     })
 
     return (
-      <Container maxWidth="xl" >
-        <Box my={2} position="relative">
+      <div style={{position:'relative',margin:'20px'}}>
           {comps}
-        </Box>
-      </Container>
+        </div>
     )
 
   }
 
   renderComponentsList(){
 
-    const {components} = this.state;
-    const comps = components.map((component)=>{ return (
-      <Grid item xs={2} sm={4} md={4} key={component}  style={{border:"1px solid green", marginLeft:"-1px", marginTop:"-1px"}}>
-        <Box
-          onContextMenu={(e)=>{ this.showComponentMenu(e, component);}}
-          sx={{
-            cursor: 'grab',
-            pt: '100%',
-            position: 'relative',
-            '&:hover': {
-              backgroundColor: 'hover',
-            },
-          }}>
-          <ComponentImgStyle src={this.state.componentBaseUrl + "/" + component} />
-        </Box>
-      </Grid>
-    )})
+    const {components, componentsData} = this.state;
+    let cdata;
+    const comps = components.map((component)=>{
+      if(componentsData && componentsData[component]){
+        cdata = componentsData[component];
+      }
+      if(cdata && cdata.type && cdata.type === "locked"){
+        return null;
+      }
+      else{
+        return (
+          <Grid item xs={2} sm={4} md={4} key={component}  style={{border:"1px solid green", marginLeft:"-1px", marginTop:"-1px"}}>
+            <Box
+              onContextMenu={(e)=>{ this.showComponentMenu(e, component);}}
+              sx={{
+                cursor: 'grab',
+                pt: '100%',
+                position: 'relative',
+                '&:hover': {
+                  backgroundColor: 'hover',
+                },
+              }}>
+              <ComponentImgStyle src={this.state.componentBaseUrl + "/" + component} />
+            </Box>
+          </Grid>
+        )
+      }
+    })
 
     return (
       <Container maxWidth="xl">
