@@ -25,7 +25,7 @@ class DialogStencilInfo extends React.Component {
             author: {this.props.author}
           </Typography>
           <Button onClick={()=>{
-            window.open(this.props.Homepage, '_blank').focus();
+            window.open(this.props.homepage, '_blank').focus();
           }}>
             Homepage
           </Button>

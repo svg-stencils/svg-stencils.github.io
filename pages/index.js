@@ -482,7 +482,7 @@ class ResponsiveAppBar extends React.Component {
           title={this.state.stencilMetaName}
           author={this.state.stencilMetaAuthor}
           homepage={this.state.stencilMetaHomePage}
-          licenceUrl={this.state.stencilMetaLicenseUrl}
+          licenseUrl={this.state.stencilMetaLicenseUrl}
           description={this.state.stencilMetaDescription}
         />
 
