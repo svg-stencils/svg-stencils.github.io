@@ -11,7 +11,7 @@ class DialogError extends React.Component {
   render(){
     return (
         <Dialog
-          open={this.props.open}
+          open={this.props.open?this.props.open:false}
           onClose={()=>{this.props.onClose()}}
           maxWidth="lg"
           fullWidth={true}

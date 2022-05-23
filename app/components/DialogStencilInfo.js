@@ -12,7 +12,7 @@ class DialogStencilInfo extends React.Component {
   render(){
     return (
       <Dialog
-        open={this.props.open}
+        open={this.props.open?this.props.open:false}
         onClose={()=>{this.props.onClose()}}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

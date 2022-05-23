@@ -268,7 +268,7 @@ class ResponsiveAppBar extends React.Component {
   renderComponentsCanvas(){
     const {components, componentsData} = this.state;
 
-    const canvasDefaultWidth = 7000;
+    const canvasDefaultWidth = 5000;
     const factor = canvasDefaultWidth / this.state.mostRight * this.state.zoomValue / 100;
     //const factor = 1
 
@@ -284,9 +284,9 @@ class ResponsiveAppBar extends React.Component {
 
         let img = new Image();
         img.onload = function() {
-          console.log("---------------------------")
-          console.log("Calc Image Width: ", width)
-          console.log("Real Image Width: ", (this.width * factor))
+          //console.log("---------------------------")
+          //console.log("Calc Image Width: ", width)
+          //console.log("Real Image Width: ", (this.width * factor))
         };
         img.src = this.state.componentBaseUrl + "/" + component
 
@@ -299,7 +299,8 @@ class ResponsiveAppBar extends React.Component {
         }
 
         if(cdata.type && cdata.type === "locked"){
-          console.log(cdata)
+          //console.log("LOCKED")
+          //console.log(cdata)
 
           return (
             <Box onContextMenu={(e)=>{

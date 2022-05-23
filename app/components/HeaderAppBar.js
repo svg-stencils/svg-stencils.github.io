@@ -42,6 +42,7 @@ class HeaderAppBar extends React.Component {
   }
 
   renderStencilSelection(){
+
     return (
       <Autocomplete
         value={this.props.selectedStencilValue}
