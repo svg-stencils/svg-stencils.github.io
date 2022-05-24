@@ -92,7 +92,7 @@ class HeaderAppBar extends React.Component {
             {option.name}
           </li>
         )}
-        style={{ minWidth: "250px" }}
+        sx={{ width: 300 }}
         renderInput={(params) => (
           <TextField {...params} label={(getValidUrl(this.props.selectedStencilValue.name)?"Stencil URL":"Stencil")} placeholder="Select or enter stencil URL" />
         )}
@@ -102,9 +102,10 @@ class HeaderAppBar extends React.Component {
 
   render(){
     return (
-      <AppBar position="static" color="white" position="sticky" style={{minWidth:"850px"}}>
+      <AppBar position="fixed" color="white"  style={{minWidth:"850px"}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters={true}>
+
             <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
 
               {this.renderStencilSelection()}
@@ -119,37 +120,6 @@ class HeaderAppBar extends React.Component {
 
             </Box>
 
-            <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
-              <ToggleButtonGroup
-                disabled={this.props.viewDisabled}
-                value={this.props.view}
-                exclusive
-                size="small"
-                onChange={(e,view)=>this.props.onChangeView(view)}
-              >
-                <ToggleButton value="list" aria-label="list">
-                  <ViewModuleIcon />
-                </ToggleButton>
-                <ToggleButton value="canvas" aria-label="canvas">
-                  <ViewQuiltIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-
-            </Box>
-
-            {(this.props.zoomHidden === true ? null :
-            <Box mx={1} sx={{ flexGrow: 1, display: 'flex'  }} bgColor="#fff">
-              <Box sx={{ width: 150 }}>
-                <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                  <ZoomOutIcon onClick={()=>this.props.onZoomOut()}/>
-                  <Slider aria-label="Volume" value={this.props.zoomValue} onChange={(e, val)=>{
-                    this.props.onZoomSlide(val);
-                  }} />
-                  <ZoomInIcon onClick={()=>this.props.onZoomIn()}/>
-                </Stack>
-              </Box>
-            </Box>
-            )}
 
             <Box mx={1} sx={{ flexGrow: 0 }}>
               <img src={logoPic.src} alt="Logo SVG Stencils" width="200" />

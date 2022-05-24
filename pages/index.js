@@ -14,6 +14,7 @@ import Grid                                   from '@mui/material/Grid';
 import Box                                    from '@mui/material/Box';
 
 import HeaderAppBar                           from '../app/components/HeaderAppBar'
+import StencilToolbar                         from '../app/components/StencilToolbar'
 import DialogStencilInfo                      from '../app/components/DialogStencilInfo'
 import DialogQuickStart                       from '../app/components/DialogQuickStart'
 import DialogError                            from '../app/components/DialogError'
@@ -326,6 +327,7 @@ class ResponsiveAppBar extends React.Component {
               }}
               position='absolute' top={top+"px"} left={left+"px"} key={component}
               sx={{
+                Left: 80,
                 cursor: 'grab',
                 padding: '2px',
                 '&:hover': {
@@ -348,9 +350,14 @@ class ResponsiveAppBar extends React.Component {
     })
 
     return (
-      <div style={{position:'relative',margin:'20px'}}>
+      <Box sx={{
+        position:'relative',
+        marginLeft: 10,
+        marginTop: 10,
+
+        }}>
           {comps}
-        </div>
+        </Box>
     )
 
   }
@@ -387,7 +394,12 @@ class ResponsiveAppBar extends React.Component {
     })
 
     return (
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{
+        position:'relative',
+        marginLeft: 10,
+        marginTop: 10,
+        paddingLeft: 84
+      }}>
         <Grid container my={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           {comps}
         </Grid>
@@ -412,6 +424,12 @@ class ResponsiveAppBar extends React.Component {
             this.setState({selectedStencilValue: stencil});
             this.selectStencil(stencil)}
           }
+
+
+        />
+
+        <StencilToolbar
+          infoIconDisabled={this.state.infoIconDisabled}
 
           view={this.state.view}
           viewDisabled={this.state.viewDisabled}
@@ -438,7 +456,6 @@ class ResponsiveAppBar extends React.Component {
           onZoomSlide={(val)=>{
             this.setState({zoomValue:val});
           }}
-
         />
 
         {(this.state.view === 'list' ? this.renderComponentsList():this.renderComponentsCanvas())}
