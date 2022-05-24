@@ -85,10 +85,11 @@ class ResponsiveAppBar extends React.Component {
         return response.json();
       })
       .then((stencils)=> {
-        this.setState({stencils: stencils});
+        this.setState({stencils: stencils}, this.getStencilByQuery(stencils));
       });
   }
 
+  /*
   componentDidUpdate(prevProps) {
     const { query } = this.props.router
     // verify props have changed to avoid an infinite loop
@@ -100,7 +101,6 @@ class ResponsiveAppBar extends React.Component {
       }
       else{
 
-        console.log(query.stencil)
         const searchStencil = this.state.stencils.find((stencil) => stencil.name === query.stencil);
         if(searchStencil){
           this.setState({selectedStencilValue: {name: searchStencil.name, url: searchStencil.url }});
@@ -113,6 +113,35 @@ class ResponsiveAppBar extends React.Component {
         }
       }
     }
+  }
+  */
+
+  getStencilByQuery(stencils){
+    const params = new URLSearchParams(window.location.search);
+    const queryStencil = params.get("stencil");
+
+    if (queryStencil) {
+
+      if(queryStencil.startsWith("http://") || queryStencil.startsWith("https://")){
+        this.setState({selectedStencilValue: {name: query.stencil, url: query.stencil }});
+        this.selectStencil({url:query.stencil});
+      }
+      else{
+
+        console.log(queryStencil)
+        const searchStencil = stencils.find((stencil) => stencil.name === queryStencil);
+        if(searchStencil){
+          this.setState({selectedStencilValue: {name: searchStencil.name, url: searchStencil.url }});
+          this.selectStencil({url:searchStencil.url});
+        }
+        else{
+          console.log(stencils) // returns query params object
+          const errorText = `A stencil with the name ${queryStencil} is not in our Library. Please check for typo's`;
+          this.setState({errorOpen: true, errorTitle: `Sorry, can't find stencil ${queryStencil}`, errorText: errorText })
+        }
+      }
+    }
+
   }
 
   clearStencil(){
