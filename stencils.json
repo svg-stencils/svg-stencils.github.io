@@ -1,7 +1,7 @@
 [
   {
-    "name": "World Continents",
-    "url": "https://svg-stencils.github.io/world-stencils/stencil-continents"
+    "name": "World Map - Countries",
+    "url": "https://svg-stencils.github.io/world-stencils/countries/"
   },
   {
     "name": "Inkscape Mockup Toolkit",
@@ -12,20 +12,56 @@
     "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-patterns"
   },
   {
-    "name":"Gnome GTK4 Widgets Light",
-    "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-light"
-  },
-  {
-    "name": "Gnome GTK4 Widgets Dark",
-    "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-dark"
+    "name":"Gnome GTK4 Widgets",
+    "url": "https://mipmip.pages.gitlab.gnome.org/mockup-resources/stencil-widgets"
   },
   {
     "name": "Pure CSS Remix Widgets",
     "url": "https://guilherme-svg.github.io/mockup-resources/pure-css-remix-widgets"
   },
   {
-    "name": "Italia Wire Kit - Basics",
-    "url": "https://mipmip.github.io/svg-stencil-italia-wire-kit-basics"
+    "url": "https://mipmip.github.io/omnichart-svg-stencil/styles/",
+    "name": "Omnichart - Styles"
+  },
+  {
+    "url": "https://mipmip.github.io/omnichart-svg-stencil/blocks/",
+    "name": "Omnichart - Blocks"
+  },
+  {
+    "url": "https://mipmip.github.io/omnichart-svg-stencil/notes/",
+    "name": "Omnichart - Notes"
+  },
+  {
+    "url": "https://mipmip.github.io/omnichart-svg-stencil/arrows/",
+    "name": "Omnichart - Arrows"
+  },
+  {
+    "name": "MUI v5.x Community - Alert",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/alert"
+  },
+  {
+    "name": "MUI v5.x Community - Avatar",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/avatar"
+  },
+  {
+    "name": "MUI v5.x Community - Button",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/button"
+  },
+  {
+    "name": "MUI v5.x Community - Checkbox",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/checkbox"
+  },
+  {
+    "name": "MUI v5.x Community - Table",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/table"
+  },
+  {
+    "name": "MUI v5.x Community - Text Field",
+    "url": "https://mipmip.github.io/mui-5-community-svg-stencils/text-field"
+  },
+  {
+    "name": "Material Design Icons - Filled",
+    "url": "https://mipmip.github.io/material-design-icons-svg-stencils/filled"
   },
   {
     "name": "IT Stencils (Isometric)",
@@ -39,13 +75,5 @@
     "name": "Touch Gestures Stencil",
     "url": "https://mipmip.github.io/touch-gestures-svg-stencil"
 
-  },
-  {
-    "name": "Simple Flowchart",
-    "url": "https://mipmip.github.io/simple-flowchart-stencil/"
-  },
-  {
-    "name": "Material Design Icons - Filled",
-    "url": "https://mipmip.github.io/material-design-icons-svg-stencils/filled/"
   }
 ]
