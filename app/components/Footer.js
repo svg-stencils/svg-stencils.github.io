@@ -19,7 +19,7 @@ class Footer extends React.Component {
 
           <Box sx={{ flexGrow: 1 }} />
           <Button onClick={()=>{
-            window.location.href = "https://github.com/svg-stencils/svg-stencils.github.io/blob/main/DOCUMENTATION.md";
+            window.location.href = "https://svg-stencils.github.io/documentation";
           }}>
             Documentation
           </Button>

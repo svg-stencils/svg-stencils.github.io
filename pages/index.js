@@ -281,6 +281,8 @@ class ResponsiveAppBar extends React.Component {
         const left = cdata.left * factor
 
         let width = (cdata.right - cdata.left) * factor
+        //console.log(width)
+        //console.log(factor)
 
         let img = new Image();
         img.onload = function() {
@@ -316,6 +318,8 @@ class ResponsiveAppBar extends React.Component {
           )
         }
         else{
+
+          //cssWidth = (100*factor)+"%";
           return (
             <Box onContextMenu={(e)=>{
               this.showComponentMenu(e, component);
@@ -330,7 +334,7 @@ class ResponsiveAppBar extends React.Component {
                 },
               }}>
 
-              <img title={width} src={this.state.componentBaseUrl + "/" + component} style={{width:cssWidth}} />
+              <img src={this.state.componentBaseUrl + "/" + component} style={{width:cssWidth}} />
 
             </Box>
           )
