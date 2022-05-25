@@ -123,8 +123,8 @@ class ResponsiveAppBar extends React.Component {
     if (queryStencil) {
 
       if(queryStencil.startsWith("http://") || queryStencil.startsWith("https://")){
-        this.setState({selectedStencilValue: {name: query.stencil, url: query.stencil }});
-        this.selectStencil({url:query.stencil});
+        this.setState({selectedStencilValue: {name: queryStencil, url: queryStencil }});
+        this.selectStencil({url:queryStencil});
       }
       else{
 
