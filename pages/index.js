@@ -128,14 +128,14 @@ class ResponsiveAppBar extends React.Component {
       }
       else{
 
-        console.log(queryStencil)
+        //console.log(queryStencil)
         const searchStencil = stencils.find((stencil) => stencil.name === queryStencil);
         if(searchStencil){
           this.setState({selectedStencilValue: {name: searchStencil.name, url: searchStencil.url }});
           this.selectStencil({url:searchStencil.url});
         }
         else{
-          console.log(stencils) // returns query params object
+          //console.log(stencils) // returns query params object
           const errorText = `A stencil with the name ${queryStencil} is not in our Library. Please check for typo's`;
           this.setState({errorOpen: true, errorTitle: `Sorry, can't find stencil ${queryStencil}`, errorText: errorText })
         }
@@ -519,6 +519,11 @@ class ResponsiveAppBar extends React.Component {
             navigator.clipboard.writeText(shareURL)
             this.setState({shareStencilMenu: null});
           }}>Copy Link</MenuItem>
+          <MenuItem onClick={()=>{
+            const shareURL = "https://svg-stencils.github.io/?stencil="+this.state.selectedStencilValue.name;
+            window.open(shareURL, '_blank').focus();
+            this.setState({shareStencilMenu: null});
+          }}>Open in new tab</MenuItem>
         </Menu>
 
         <Backdrop
