@@ -8,7 +8,7 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="icon" type="image/png" href="/images/favicon.png" />
-          <script async defer data-website-id="36a8f40c-8161-4ae2-8731-57e46f8aae88" src="https://umami.quiqr.app/umami.js"></script>
+          <script async defer data-website-id="88e7ccd0-2818-4726-9e51-59a38dcac26c" src="https://umami.poppygo.io/umami.js"></script>
           <link
             rel="stylesheet"
               href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
